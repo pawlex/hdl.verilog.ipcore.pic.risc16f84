@@ -47,6 +47,6 @@ compile the verilog model
 * intel2readmemh -- utility for converting between intel hex to $readmemh format.
 
 # Resources
-original risc16f84 project on opencores : https://opencores.org/project,risc16f84
-SDCC code examples : https://github.com/diegoherranz/sdcc-examples
-PIC 16F627 datasheet : http://ww1.microchip.com/downloads/en/devicedoc/40044f.pdf
+original risc16f84 project on opencores : (https://opencores.org/project,risc16f84)
+SDCC code examples : (https://github.com/diegoherranz/sdcc-examples)
+PIC 16F627 datasheet : (http://ww1.microchip.com/downloads/en/devicedoc/40044f.pdf)
