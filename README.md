@@ -1,6 +1,15 @@
 # Soft Core PIC16F84
 ## Project goals
-Create a small synthesizable soft core uController modeled in VERILOG that can be simulated with open-source tools such as:
+### Create a very small soft-core processor / uController (not SOC)
+* No timers / counters
+* No VGA
+* No Keyboard controller
+* No built-in UART
+### Written in Verilog
+### Platform Independent (xilinx,altera,lattice)
+* No megafunction blocks or platform specific macros.
+### Synthesizable with low gate count.
+### Compatable with open-source tools such as:
 * icarus verilog (compile / simulate)
 * gtkwave (waveform viewer)
 * sdcc (c compiler)
@@ -45,3 +54,14 @@ compile the verilog model
 * Makefile -- for building soft-core firmware
 * compile -- for compiling / executing / simulating HDL.
 * intel2readmemh -- utility for converting between intel hex to $readmemh format.
+
+# Resources
+* original risc16f84 project on opencores : https://opencores.org/project,risc16f84
+* SDCC code examples : https://github.com/diegoherranz/sdcc-examples
+* PIC 16F627 datasheet : http://ww1.microchip.com/downloads/en/devicedoc/40044f.pdf
+
+# History
+### Motivation
+I grew tired creating verilog state machines that were effecively "throw away code".  Anyone who has writtin this type of code to do things like handle UART ouptut or copy bytes from one unit to another probably know exactly what I'm talking about.  I found I was spending as much, if not more time on integration of IP's than I was writing them.
+### Settling on PIC
+I initially wanted to use PacoBlaze (PicoBlaze clone written in Verilog) for this project as it checked all the boxes for requirements.  However, after learning the core, wiring up the sim, learning the ISA and assembler tools I found it just didn't work as expected.  I have reached out to the developer to address this, but I'm not holding my breath seeing as the project hasn't been updated since 2007.  If anyone has any experience with PacoBlaze please don't hesitate to reach out to me.  I find Paco/Picoblaze to have a rich yet easy ISA, mature tools and large community support.
