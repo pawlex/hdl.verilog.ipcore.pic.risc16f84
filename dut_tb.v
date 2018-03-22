@@ -34,12 +34,12 @@ module dut_tb(
     parameter AUX_ADDR_WIDTH = 16;
     wire [AUX_DATA_WIDTH-1:0] aux_data;
     wire [AUX_ADDR_WIDTH-1:0] aux_addr;
-    wire aux_we;
+    wire aux_wr_stb;
 
     // CREATE A RAM TO TEST AUX BUS
     reg [AUX_DATA_WIDTH-1:0] aux_ram [1<<AUX_ADDR_WIDTH];
-    assign aux_data = aux_we ? {AUX_DATA_WIDTH{1'bz}} : aux_ram[aux_addr];
-    always @(posedge clk) if(aux_we) aux_ram[aux_addr] <= aux_data; 
+    assign aux_data = aux_wr_stb ? {AUX_DATA_WIDTH{1'bz}} : aux_ram[aux_addr];
+    always @(posedge clk) if(aux_wr_stb) aux_ram[aux_addr] <= aux_data; 
 
     // BEGIN INTERRUPT (Not tested as per the notes).
     wire int0;
@@ -58,7 +58,8 @@ risc16f84_clk2x pic (
         .ram_we_o(ram_we),       
         .aux_adr_o(aux_addr),    
         .aux_dat_io(aux_data),   
-        .aux_we_o(aux_we),       
+        .aux_we_o(aux_wr_stb),
+        .aux_re_o(aux_rd_stb),
         .int0_i(int0),           
         .reset_i(reset),         
         .clk_en_i(clken),        

@@ -6,7 +6,7 @@
 module top_tb();
     // TB Params
     localparam CLOCK_PERIOD = 16.6667; // 60MHz
-    localparam MAX_CYCLES = 100000;
+    localparam MAX_CYCLES = 200000;
     localparam DUMP_FILE = "dump.vcd";
 
     // Generate the clock and reset signals.

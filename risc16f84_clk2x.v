@@ -150,6 +150,7 @@
 //                  an error such that all subtraction results were off by 1.
 //                  Obviously, this was unacceptable, and I think it has been fixed
 //                  by the new signals "c_subtract_zero" and "c_dig_subtract_zero"
+// Update: 03/22/18 Added read strobe to aux bus. - Paul Komurka
 //
 // Description
 //---------------------------------------------------------------------------
@@ -186,6 +187,7 @@ module risc16f84_clk2x (
   aux_adr_o,            // [15:0] Auxiliary address bus
   aux_dat_io,           // [7:0] Auxiliary data bus (tri-state bidirectional)
   aux_we_o,             // Auxiliary write strobe (H active)
+  aux_re_o,             // Auxiliary read  strobe (H active) PK
   int0_i,               // PORT-B(0) INT
   reset_i,              // Power-on reset (H active)
   clk_en_i,             // Clock enable for all clocked logic
@@ -221,6 +223,7 @@ output ram_we_o;            // RAM write strobe (H active)
 output [15:0] aux_adr_o;    // AUX address bus
 inout  [7:0]  aux_dat_io;   // AUX data bus
 output aux_we_o;            // AUX write strobe (H active)
+output aux_re_o;            // AUX read  strobe (H active)
 
        // interrupt input
 input  int0_i;              // INT
@@ -324,6 +327,7 @@ wire addr_sram;
      // Other output registers (for removing hazards)
 reg  ram_we_reg;          // data-sram write strobe
 reg  aux_we_reg;          // AUX write strobe
+reg  aux_re_reg;          // AUX read  strobe --pk
 
 
      // Signals used in "main_efsm" procedure
@@ -750,6 +754,8 @@ begin
       // using combinational logic only, without using registers!
       ram_we_reg <= (writeram_node && addr_sram);
       aux_we_reg <= (writeram_node && addr_aux_dat);
+      aux_re_reg <= (!writeram_node && addr_aux_dat); // pk
+      
     end   // End of Q2 state
     
     //---------------------------------------------------------------------
@@ -933,6 +939,7 @@ assign ram_we_o   = ram_we_reg;    // data RAM write enable
 assign aux_adr_o  = {aux_adr_hi_reg,aux_adr_lo_reg};
 assign aux_dat_io = (aux_we_reg && clk_en_i)?aluout:{8{1'bZ}};
 assign aux_we_o   = aux_we_reg;
+assign aux_re_o   = (aux_re_reg & addr_aux_dat); // single pulse -pk
 
 endmodule
 
