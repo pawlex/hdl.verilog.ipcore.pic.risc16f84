@@ -21,13 +21,18 @@ vvp.tgt: Icarus Verilog VVP Code Generator
 
 ## Getting started
 build the C source (main.c)
-convert the intel hex rom to $readmemh format.
 
 ``` $ make ```
 
 compile the verilog model
+
 ``` $ compile ```
 
-top_tb.v -
-          | - dut_tb.v -
-                        | - risc16f84_clk2x.v
+## Resources
+top_tb.v -- Top level simulation
+dut_tb.v -- Device under test simulation env.
+risc16f84_clk2x.v -- device under test.
+main.c -- soft-core firmware writtin in C.
+Makefile -- for building soft-core firmware
+compile -- for compiling / executing / simulating HDL.
+intel2readmemh -- utility for converting between intel hex to $readmemh format.
