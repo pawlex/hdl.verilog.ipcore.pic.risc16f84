@@ -22,7 +22,12 @@ vvp.tgt: Icarus Verilog VVP Code Generator
 ## Getting started
 build the C source (main.c)
 convert the intel hex rom to $readmemh format.
-``` make ```
+
+``` $ make ```
 
 compile the verilog model
-``` compile ```
+``` $ compile ```
+
+top_tb.v -
+          | - dut_tb.v -
+                        | - risc16f84_clk2x.v
