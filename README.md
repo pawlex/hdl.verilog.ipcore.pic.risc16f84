@@ -5,6 +5,15 @@ Create a small synthesizable soft core uController modeled in VERILOG that can b
 * gtkwave (waveform viewer)
 * sdcc (c compiler)
 * gputils (Development utilities for Microchip (TM) PIC (TM) microcontrollers)
+
+# FPGA
+## STATUS
+Untested
+
+# Simulation
+## STATUS
+All functions working as expected. Interrupts not tested yet.
+
 ## Requirements
 * Linux desktop environment
 * SDCC with non-free package for PIC
