@@ -20,7 +20,7 @@ module dut_tb(
     // BEGIN RAM SECTION.
     parameter RAM_DATA_WIDTH = 8;
     parameter RAM_ADDR_WIDTH = 9;
-    reg [RAM_DATA_WIDTH] ram [1<<RAM_ADDR_WIDTH];
+    reg  [RAM_DATA_WIDTH-1:0] ram [1<<RAM_ADDR_WIDTH];
     wire [RAM_ADDR_WIDTH-1:0] ram_addr;
     wire [RAM_DATA_WIDTH-1:0] ram_data_rd;
     wire [RAM_DATA_WIDTH-1:0] ram_data_wr;
