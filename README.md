@@ -29,10 +29,10 @@ compile the verilog model
 ``` $ compile ```
 
 ## Resources
-top_tb.v -- Top level simulation
-dut_tb.v -- Device under test simulation env.
-risc16f84_clk2x.v -- device under test.
-main.c -- soft-core firmware writtin in C.
-Makefile -- for building soft-core firmware
-compile -- for compiling / executing / simulating HDL.
-intel2readmemh -- utility for converting between intel hex to $readmemh format.
+* top_tb.v -- Top level simulation
+* dut_tb.v -- Device under test simulation env.
+* risc16f84_clk2x.v -- device under test.
+* main.c -- soft-core firmware writtin in C.
+* Makefile -- for building soft-core firmware
+* compile -- for compiling / executing / simulating HDL.
+* intel2readmemh -- utility for converting between intel hex to $readmemh format.
