@@ -1,19 +1,12 @@
 ////////////////////////////////////////////////////////////////////////////
-//
-// 
-// 
-// 
-// 
-// 
-// 
 // vim:set softtabstop=4 shiftwidth=4 expandtab tabstop=4 autoindent
 ////////////////////////////////////////////////////////////////////////////
 `timescale 1ns/100ps
 
 module top_tb();
     // TB Params
-    localparam CLOCK_PERIOD = 16.6667;
-    localparam MAX_CYCLES = 1000000;
+    localparam CLOCK_PERIOD = 16.6667; // 60MHz
+    localparam MAX_CYCLES = 100000;
     localparam DUMP_FILE = "dump.vcd";
 
     // Generate the clock and reset signals.

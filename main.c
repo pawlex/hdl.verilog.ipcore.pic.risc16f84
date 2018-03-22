@@ -19,7 +19,7 @@ void halt(void)
     }
 }
 
-#define STRIDE 0x44
+#define STRIDE 0x40
 #define MAXVAL 0x1FFF
 
 uint16_t i=0;
