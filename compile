@@ -1,0 +1,34 @@
+#!/bin/sh
+
+rm out.vvp dump.vcd
+
+LIBPATH=`pwd`
+OPTS="-DSIMULATION=1 -g2005-sv -y$LIBPATH -o out.vvp"
+iverilog $OPTS ./top_tb.v ./dut_tb.v
+
+if [ $? -ne 0 ]
+then
+    echo "abnormal exit status"
+    exit
+fi
+
+vvp out.vvp
+
+if [ $? -ne 0 ]
+then
+    echo "abnormal exit status"
+    exit
+fi
+
+GTKWAVEPID=`ps a | grep gtkwave | grep -v "grep" | awk '{print $1}'`
+if [ -z $GTKWAVEPID ]; then 
+    #rm out.vvp
+    gtkwave -r gtkwaverc dump.vcd&
+fi
+
+if [ ! -z $GTKWAVEPID ]; then 
+    printf "\n"
+    printf "GTKWAVE already running: $GTKWAVEPID \n"
+    echo "CTRL+SHIFT+R to reload waveform in GTKWAVE"
+    printf "\n"
+fi
