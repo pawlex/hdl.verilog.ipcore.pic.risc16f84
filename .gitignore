@@ -1,0 +1,11 @@
+*.vcd
+*.vvp
+*.cod
+*.hex
+*.o
+*.lst
+*.hex
+*.cod
+*.asm
+*.mem
+
