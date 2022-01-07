@@ -25,7 +25,16 @@ All functions working as expected. Interrupts not tested yet.
 
 ## Requirements
 * Linux desktop environment
-* SDCC with non-free package for PIC
+* gputils 
+* * apt-get install gputils or install from [source](http://sourceforge.net/projects/gputils/files/gputils/)
+* SDCC deps
+* * sudo apt-get install bison flex g++ libboost-dev texinfo
+* SDCC with non-free package for PIC (pic14:PIC16F)
+* * svn checkout svn://svn.code.sf.net/p/sdcc/code/trunk/sdcc sdcc
+* * ./configure
+* * make -j all
+* * sudo make install (installs to /usr/local/bin/sdcc)
+* * sdcc -v ( SDCC : mcs51/z80/z180/r2k/r2ka/r3ka/sm83/tlcs90/ez80_z80/z80n/ds390/pic16/pic14/TININative/ds400/hc08/s08/stm8/pdk13/pdk14/pdk15 )
 * icarus verilog
 ```
 Icarus Verilog version 0.10.0 
