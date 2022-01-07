@@ -1,9 +1,8 @@
 SRC=main.c
-CC=sdcc-sdcc
+CC=/usr/local/bin/sdcc
 FAMILY=pic14
 PROC=16f84
 OPTS=--use-non-free --no-extended-instructions
-
 all: $(SRC:.c=.hex) rom
 
 $(SRC:.c=.hex): $(SRC)

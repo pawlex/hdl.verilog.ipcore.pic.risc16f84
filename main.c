@@ -19,34 +19,8 @@ void halt(void)
     }
 }
 
-#define STRIDE 0x40
-#define MAXVAL 0xFF
-
-uint16_t i=0;
 void main(void)
 {
-    // LOAD GPIO RAM (RAM BACKED PORT)
-    // WITH DATA = ADDRESS
-    for(i=0;i<MAXVAL;i=i+STRIDE)
-    {
-        PORTA = i & 0xff; 
-        PORTB = ((i >> 8) & 0xff);
-        EEDATA = i & 0xff;
-    }
-    
-    // READ BACK AND COMPARE
-    for(i=0;i<MAXVAL;i=i+STRIDE)
-    {
-        PORTA = i & 0xff; 
-        PORTB = ((i >> 8) & 0xff);
-        
-        // DEADLOOP IF MISMATCH
-        if(EEDATA != (i & 0xff))
-        {
-            halt();
-        }
-    }
-
     halt();
 }
 
