@@ -11,7 +11,7 @@ module dut_tb(
     parameter ROM_ADDR_WIDTH = 13;
     reg [ROM_DATA_WIDTH-1:0] rom [1<<ROM_ADDR_WIDTH];
     initial begin
-     $readmemh("rom.mem", rom);
+     $readmemh("main.rom", rom);
     end
     wire [ROM_ADDR_WIDTH-1:0] rom_addr;
     wire [ROM_DATA_WIDTH-1:0] rom_data;
