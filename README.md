@@ -29,6 +29,8 @@ All functions working as expected. Interrupts not tested yet.
 * * apt-get install gputils or install from [source](http://sourceforge.net/projects/gputils/files/gputils/)
 * SDCC deps
 * * sudo apt-get install bison flex g++ libboost-dev texinfo
+* * sudo apt install git binutils binutils-dev subversion zlib1g zlib1g-dev libfl2 libfl-dev
+-
 * SDCC with non-free package for PIC (pic14:PIC16F)
 * * svn checkout svn://svn.code.sf.net/p/sdcc/code/trunk/sdcc sdcc
 * * ./configure
