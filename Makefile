@@ -5,6 +5,8 @@ PROC=16f84
 OPTS=--use-non-free --no-extended-instructions
 all: $(SRC:.c=.hex) rom
 
+#/usr/local/bin/sdcc --use-non-free --no-extended-instructions -mpic14 -p16f84 main.c
+
 $(SRC:.c=.hex): $(SRC)
 	$(CC) $(OPTS) -m$(FAMILY) -p$(PROC) $^
 

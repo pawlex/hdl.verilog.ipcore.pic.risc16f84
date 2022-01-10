@@ -49,6 +49,10 @@
 #define TRISB_ADDR              0x0086
 #define EECON1_ADDR             0x0088
 #define EECON2_ADDR             0x0089
+// PK
+#define UART_TX_ADDR                 0x008A
+#define UART_RX_ADDR                 0x008B
+#define UART_SR_ADDR                 0x008C
 
 #endif // #ifndef NO_ADDR_DEFINES
 
@@ -109,25 +113,16 @@ extern __at(0x0004) __sfr FSR;
 
 extern __at(0x0005) __sfr PORTA;
 
-typedef union
-  {
-  struct
+typedef struct
     {
     unsigned RA0                : 1;
     unsigned RA1                : 1;
     unsigned RA2                : 1;
     unsigned RA3                : 1;
     unsigned RA4                : 1;
-    unsigned                    : 1;
-    unsigned                    : 1;
-    unsigned                    : 1;
-    };
-
-  struct
-    {
-    unsigned RA                 : 5;
-    unsigned                    : 3;
-    };
+    unsigned RA5                    : 1;
+    unsigned RA6                   : 1;
+    unsigned RA7                   : 1;
   } __PORTAbits_t;
 
 extern __at(0x0005) volatile __PORTAbits_t PORTAbits;
@@ -137,6 +132,9 @@ extern __at(0x0005) volatile __PORTAbits_t PORTAbits;
 #define _RA2                    0x04
 #define _RA3                    0x08
 #define _RA4                    0x10
+#define _RA5                    0x20
+#define _RA6                    0x40
+#define _RA7                    0x80
 
 //==============================================================================
 
@@ -359,6 +357,29 @@ extern __at(0x0088) volatile __EECON1bits_t EECON1bits;
 //==============================================================================
 
 extern __at(0x0089) __sfr EECON2;
+// UART - PK
+extern __at(0x008A) __sfr UART_TX;
+extern __at(0x008B) __sfr UART_RX;
+
+extern __at(0x008C) __sfr UART_SR;
+typedef struct
+  {
+  unsigned TX_BUSY                   : 1;
+  unsigned RX_BUSY                   : 1;
+  unsigned RX_OVERRUN                 : 1;
+  unsigned RX_FRAME_ERROR                : 1;
+  unsigned                  : 1;
+  unsigned                      : 1;
+  unsigned                      : 1;
+  unsigned                      : 1;
+  } __UART_SRbits_t;
+
+extern __at(0x008C) volatile __UART_SRbits_t UART_SRbits;
+
+#define _TX_BUSY                     0x01
+#define _RX_BUSY                     0x02
+#define _RX_OVERRUN                  0x04
+#define _RX_FRAME_ERROR              0x08
 
 //==============================================================================
 //
@@ -403,6 +424,13 @@ extern __at(0x0089) __sfr EECON2;
 #define WREN                    EECON1bits.WREN                 // bit 2
 #define WRERR                   EECON1bits.WRERR                // bit 3
 #define EEIF                    EECON1bits.EEIF                 // bit 4
+
+
+#define TX_BUSY                 UART_SRbits.TX_BUSY
+#define RX_BUSY                 UART_SRbits.RX_BUSY    
+#define RX_OVERRUN              UART_SRbits.RX_OVERRUN     
+#define RX_FRAME_ERROR          UART_SRbits.RX_FRAME_ERROR       
+
 
 #define RBIF                    INTCONbits.RBIF                 // bit 0
 #define INTF                    INTCONbits.INTF                 // bit 1

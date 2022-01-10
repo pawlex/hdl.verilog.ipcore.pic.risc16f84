@@ -1,32 +1,38 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
-rm out.vvp dump.vcd
+SIMFILES=( "./top_tb.v" "./dut_tb.v" )
+SIMFILES+=( "./risc16f84_clk2x.v" )
 
+IVERILOG='iverilog'
+SIMFLAGS='-DSIMULATION'
+SIMOUTFL='out.vvp'
+WAVEFILE='dump.vcd'
+## TODO:  Find a better way to do this.  
 LIBPATH=`pwd`
-OPTS="-DSIMULATION=1 -g2005-sv -y$LIBPATH -o out.vvp"
-iverilog $OPTS ./top_tb.v ./dut_tb.v
+OPTS="-g2005-sv -y$LIBPATH"
 
-if [ $? -ne 0 ]
-then
-    echo "abnormal exit status"
-    exit
-fi
-
-vvp out.vvp
-
-if [ $? -ne 0 ]
-then
-    echo "abnormal exit status"
-    exit
-fi
-
+# Grab the PID of GTKWAVE (if exists)
 GTKWAVEPID=`ps a | grep gtkwave | grep -v "grep" | awk '{print $1}'`
-if [ -z $GTKWAVEPID ]; then 
-    #rm out.vvp
-    gtkwave -r gtkwaverc dump.vcd&
+
+# Compile the design simulation.
+if ! ${IVERILOG} $SIMFLAGS $OPTS -o $SIMOUTFL ${SIMFILES[@]}; then
+    echo "**** Simulation failed ****"
+    exit
 fi
 
-if [ ! -z $GTKWAVEPID ]; then 
+# Clean up the RTL.
+find -name "*.v"  -exec ./bin/vtidy -n {} 1>/dev/null \;
+find -name "*.sv" -exec ./bin/vtidy -n {} 1>/dev/null \;
+
+# Execute the simulation.
+echo "########################### BEGIN SIM OUTPUT ###########################"
+vvp out.vvp
+echo "###########################  END SIM OUTPUT  ###########################"
+
+# Launch gtkwave (if not already running).
+if [ -z $GTKWAVEPID ]; then 
+    gtkwave -r gtkwaverc dump.vcd&
+else
     printf "\n"
     printf "GTKWAVE already running: $GTKWAVEPID \n"
     echo "CTRL+SHIFT+R to reload waveform in GTKWAVE"
