@@ -14,7 +14,7 @@ clean:
 	rm -f $(SRC:.c=.asm) $(SRC:.c=.cod) $(SRC:.c=.hex) $(SRC:.c=.lst) $(SRC:.c=.o) $(SRC:.c=.hex) $(SRC:.c=.rom) out.vvp dump.vcd
 
 rom:
-	./intel2readmemh $(SRC:.c=.hex) > $(SRC:.c=.rom) || /bin/true
+	./bin/intel2readmemh $(SRC:.c=.hex) > $(SRC:.c=.rom) || /bin/true
 
 
 .PHONY: all clean
