@@ -3,7 +3,7 @@ CC=/usr/local/bin/sdcc
 FAMILY=pic14
 PROC=16f84
 OPTS=--use-non-free --no-extended-instructions
-all: $(SRC:.c=.hex) rom
+all: clean $(SRC:.c=.hex) rom 
 
 #/usr/local/bin/sdcc --use-non-free --no-extended-instructions -mpic14 -p16f84 main.c
 

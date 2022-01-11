@@ -1,0 +1,76 @@
+#include <stdint.h>
+#include <stdio.h>
+#include <string.h>
+#include <pic16f84.h>
+
+void halt(void)
+{
+    while(1)
+    {
+        __asm nop __endasm;
+    }
+}
+
+void main(void)
+{
+   // uint8_t foo = 0x55;
+   // UART_SR = 0xFF;
+   // UART_SR = 0x00;
+   // UART_SR = 0xFF;
+   // UART_SR = 0x00;
+   // UART_SR = 0xFF;
+   // UART_SR = 0x00;
+   // UART_SR = 0xFF;
+   // UART_TX = 0xDE;
+   // UART_TX = 0xED;
+   // foo = UART_RX;
+    for(uint8_t i=0;i<0xFF; i++)
+    {
+        PORTA = i; 
+        EEDATA = i;
+    }
+
+    //PORTA = UART_TX;
+    EEDATA = UART_RX;
+    EEDATA = UART_RX;
+    EEDATA = UART_RX;
+    EEDATA = UART_RX;
+    EEDATA = UART_RX;
+    EEDATA = UART_RX;
+    EEDATA = UART_RX;
+
+    //UART_TX = 0xDE;
+    //UART_TX = 0xAD;
+    //UART_TX = 0xBE;
+    //UART_TX = 0xEF;
+
+    //UART_RX = 0xDE;
+    //UART_RX = 0xAD;
+    //UART_RX = 0xBE;
+    //UART_RX = 0xEF;
+    //
+    //UART_SR = 0xDE;
+    //UART_SR = 0xAD;
+    //UART_SR = 0xBE;
+    //UART_SR = 0xEF;
+
+
+    for(uint8_t i=0;i<0xFF; i++)
+    {
+        PORTA = i; 
+        EEDATA = i;
+    }
+
+
+    halt();
+}
+
+//UART_SR.TX_BUSY        = 0x1
+//UART_SR.RX_BUSY        = 0x1
+//UART_SR.RX_OVERRUN     = 0x1
+//UART_SR.RX_FRAME_ERROR = 0x1
+//UART_SR.TX_READY       = 0x1
+//UART_SR.TX_VALID       = 0x1
+//UART_SR.RX_READY       = 0x1
+//UART_SR.RX_VALID       = 0x1
+

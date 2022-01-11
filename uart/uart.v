@@ -45,7 +45,6 @@ module uart #
            output wire [DATA_WIDTH-1:0]  output_axis_tdata,
            output wire                   output_axis_tvalid,
            input  wire                   output_axis_tready,
-
            /*
             * UART interface
             */
@@ -66,6 +65,16 @@ module uart #
            input  wire [15:0]            prescale
 
        );
+
+
+       `ifdef SIMULATION
+wire tx_ready, tx_valid, rx_ready, rx_valid;
+assign tx_valid = input_axis_tvalid;
+assign tx_ready = input_axis_tready;
+assign rx_valid = output_axis_tvalid;
+assign rx_ready = output_axis_tready;
+       `endif
+
 
 uart_tx #(
             .DATA_WIDTH(DATA_WIDTH)

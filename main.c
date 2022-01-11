@@ -3,27 +3,6 @@
 #include <string.h>
 #include <pic16f84.h>
 
-/* Paul Komurka
- * test file for the soft-core pic16f84 (clk2x)
- * with ports A/B removed and replaced with a 
- * GPIO BUS.
- *
- * IO BUS:
- * ADDRESS [15:0] = { PORTB,PORTA }
- * DATA    [7:0 ] =   EEDATA
- * UART_TX [7:0]
- * UART_RX [7:0]
- * UART_SR
- * UART_SRbits.TX_BUSY
- * UART_SRbits.RX_BUSY    
- * UART_SRbits.RX_OVERRUN     
- * UART_SRbits.RX_FRAME_ERROR     
- * UART_SRbits.TX_READY
- * UART_SRbits.TX_VALID
- * UART_SRbits.RX_READY
- * UART_SRbits.RX_VALID
- */
-
 void halt(void)
 {
     while(1)
@@ -32,35 +11,61 @@ void halt(void)
     }
 }
 
+void sleepn(uint16_t target)
+{
+    target = (target < 1) ? 10 : target; // sanity
+    for(uint16_t i=0; i<target; i++)
+    {
+        __asm nop __endasm;
+    }
+}
+
+uint8_t uart_status()
+{
+    uint8_t uart_status = UART_SR;
+    return uart_status;
+}
+
+void put_uart(unsigned char *val)
+{
+    UART_TX = *val;
+    do{ sleepn(10); } while (!(uart_status() & 0x20)); // WAIT FOR TX READY
+    UART_SR = uart_status() | 0x80; // set TX VALID
+    do{ sleepn(10); } while (uart_status() & 0x20); // WAIT FOR TX NOT READY
+    UART_SR = uart_status() & ~0x80; // unset TX VALID
+}
+
+unsigned char get_uart()
+{
+    do{ sleepn(10); } while (!(uart_status() & 0x10)); // WAIT FOR RX VALID
+    sleepn(10);
+    unsigned char retval = UART_RX;
+    sleepn(10);
+    UART_SR = uart_status() | 0x40; // set RX READY
+    UART_SR = uart_status() & ~0x40; // unset RX READY
+    return retval;
+}
+const unsigned char mystring[] = "Hello World!\n";
+char buf[16];
+
 void main(void)
 {
-    uint8_t foo = 0x55;
-    UART_SR = 0xFF;
-    UART_SR = 0x00;
-    UART_SR = 0xFF;
-    UART_SR = 0x00;
-    UART_SR = 0xFF;
-    UART_SR = 0x00;
-    UART_SR = 0xFF;
-     //UART_SR.TX_BUSY        = 0x1
-     //UART_SR.RX_BUSY        = 0x1
-     //UART_SR.RX_OVERRUN     = 0x1
-     //UART_SR.RX_FRAME_ERROR = 0x1
-     //UART_SR.TX_READY       = 0x1
-     //UART_SR.TX_VALID       = 0x1
-     //UART_SR.RX_READY       = 0x1
-     //UART_SR.RX_VALID       = 0x1
-
-    for(uint8_t i=0;i<0xFF; i++)
+    for(uint8_t i=0; i<sizeof(mystring); i++)
     {
-        PORTA = i; 
-        EEDATA = i;
-    }
-    for(uint8_t i=0;i<0xFF; i++)
-    {
-        PORTB = i; 
-        EEDATA = i;
+        put_uart(&mystring[i]);
+        buf[i] = get_uart();
     }
     halt();
 }
 
+//typedef struct
+//  {
+//  unsigned TX_BUSY         0x01 
+//  unsigned RX_BUSY         0x02 
+//  unsigned RX_OVERRUN      0x04 
+//  unsigned RX_FRAME_ERROR  0x08 
+//  unsigned RX_VALID        0x10 
+//  unsigned TX_READY        0x20 
+//  unsigned RX_READY        0x40 
+//  unsigned TX_VALID        0x80 
+//  } __UART_SRbits_t;

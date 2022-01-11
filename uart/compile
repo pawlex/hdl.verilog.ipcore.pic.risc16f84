@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+SIMFILES=( "./tb.v" "./top.v" )
+SIMFILES+=( "./uart.v" "uart_rx.v" "uart_tx.v" )
+
+IVERILOG='iverilog'
+SIMFLAGS='-DSIMULATION'
+SIMOUTFL='out.vvp'
+WAVEFILE='dump.vcd'
+## TODO:  Find a better way to do this.  
+LIBPATH=`pwd`
+OPTS="-g2005-sv -y$LIBPATH"
+
+# Grab the PID of GTKWAVE (if exists)
+GTKWAVEPID=`ps a | grep gtkwave | grep -v "grep" | awk '{print $1}'`
+
+# Compile the design simulation.
+if ! ${IVERILOG} $SIMFLAGS ${OPTS} -o $SIMOUTFL ${SIMFILES[@]}; then
+    echo "**** Simulation failed ****"
+    exit
+fi
+
+# Clean up the RTL.
+find -name "*.v"  -exec ./bin/vtidy -n {} 1>/dev/null \;
+find -name "*.sv" -exec ./bin/vtidy -n {} 1>/dev/null \;
+
+# Execute the simulation.
+echo "########################### BEGIN SIM OUTPUT ###########################"
+vvp out.vvp
+echo "###########################  END SIM OUTPUT  ###########################"
+
+# Launch gtkwave (if not already running).
+if [ -z $GTKWAVEPID ]; then 
+    gtkwave -r gtkwaverc dump.vcd&
+else
+    printf "\n"
+    printf "GTKWAVE already running: $GTKWAVEPID \n"
+    echo "CTRL+SHIFT+R to reload waveform in GTKWAVE"
+    printf "\n"
+fi

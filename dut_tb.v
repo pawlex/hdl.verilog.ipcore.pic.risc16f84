@@ -19,11 +19,20 @@ assign rom_data = rom[rom_addr];
 
 // BEGIN RAM SECTION.
 parameter RAM_DATA_WIDTH = 8;
-parameter RAM_ADDR_WIDTH = 9;
+parameter RAM_ADDR_WIDTH = 7;
 reg  [RAM_DATA_WIDTH-1:0] ram [1<<RAM_ADDR_WIDTH];
 wire [RAM_ADDR_WIDTH-1:0] ram_addr;
 wire [RAM_DATA_WIDTH-1:0] ram_data_rd;
 wire [RAM_DATA_WIDTH-1:0] ram_data_wr;
+//initial begin
+//        for(i=0;i<(1<<RAM_ADDR_WIDTH);i=i+1) for(n=0;(1<<RAM_DATA_WIDTH);n=n+1)
+//        initial $dumpvars(0,ram[i][n]);
+//end
+integer i;
+initial begin
+    for(i=0;i<(1<<RAM_ADDR_WIDTH);i=i+1) $dumpvars(0,ram[i]);
+end
+
 assign ram_data_rd = ram[ram_addr];
 
 always @(posedge clk) if(ram_we)

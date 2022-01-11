@@ -352,37 +352,56 @@ wire next_exec_stall;
 // Instantiations
 //--------------------------------------------------------------------------
 
-
+// Loopback UART TX->RX pin fer testings.
+wire addr_uart_rx_data, addr_uart_tx_data, addr_uart_sr;
 wire utr;
-reg [7:0] uart_rx_data;
+
+// UART RX coming from the UART IP is latched below.
+wire [7:0] uart_rx_data;
+assign ram_i_node = (addr_uart_rx_data) ? uart_rx_data : 8'hzz;
+
+// UART TX needs to come from the REGISTER FILE.
 reg [7:0] uart_tx_data;
-reg [7:0] uart_sr; // status register
 
 
-//UART_SRbits.TX_BUSY
-//UART_SRbits.RX_BUSY
-//UART_SRbits.RX_OVERRUN
-//UART_SRbits.RX_FRAME_ERROR
-//
-//UART_SRbits.TX_READY
-//UART_SRbits.TX_VALID
-//UART_SRbits.RX_READY
-//UART_SRbits.RX_VALID
+// Need to figure out which are read and which are write
+reg [7:0] uart_sr_ff; // status register [5:0] are read-only.
+wire [7:0] uart_sr;
+wire [7:0] uart_sr_comb = {uart_sr_ff[7:6], uart_sr[5:0]};
+assign ram_i_node = (addr_uart_sr) ? uart_sr_comb : 8'hzz;
+
+assign addr_uart_tx_data = (ram_adr_node[7:0]    == 8'h07);
+assign addr_uart_rx_data = (ram_adr_node[7:0]    == 8'h87);
+assign addr_uart_sr      = (ram_adr_node[7:0]    == 8'h09);
 
 
-uart #(.DATA_WIDTH(8), .PRESCALE('d50_000_000 / (9600*8)))
+//UART_SRbits.TX_BUSY       //rd
+//UART_SRbits.RX_BUSY       //rd
+//UART_SRbits.RX_OVERRUN    //rd
+//UART_SRbits.RX_FRAME_ERROR//rd
+//UART_SRbits.RX_VALID // rd // indicates there is a valid word waiting in the RX buffer.
+//UART_SRbits.TX_READY // rd // indicates if we can write to the TX buffer.
+//UART_SRbits.RX_READY // wr // assert this when we want to read from the RX buffer.
+//UART_SRbits.TX_VALID // wr // assert this when we want to write to the TX buffer.
+
+//UART_TX_DATA = 0x0007
+//UART_RX_DATA = 0x0087
+//UART_SR      = 0x0009
+
+
+uart #(.DATA_WIDTH(8))
      pic_uart
      (
-         .clk(clk),
-         .rst(~reset_n), // Active high reset.
+         .clk(clk_i),
+         .rst(reset_i), // Active high reset.
 
          .input_axis_tdata(uart_tx_data),
-         .input_axis_tvalid(uart_sr[4]),
+         .input_axis_tvalid(uart_sr_ff[7]),
          .input_axis_tready(uart_sr[5]),
 
          .output_axis_tdata(uart_rx_data),
-         .output_axis_tvalid(uart_sr[6]),
-         .output_axis_tready(uart_sr[7]),
+         .output_axis_tvalid(uart_sr[4]),
+         .output_axis_tready(uart_sr_ff[6]),
          // CONNECT THIS TO TOP OF MODULE
          .rxd(utr),
          .txd(utr),
@@ -395,7 +414,6 @@ uart #(.DATA_WIDTH(8), .PRESCALE('d50_000_000 / (9600*8)))
          // TODO:  Make this it's own register?
          .prescale(10) // low value for testing
      );
-
 
 //--------------------------------------------------------------------------
 // Functions & Tasks
@@ -472,14 +490,15 @@ assign addr_sram   = (ram_adr_node[6:0] > 7'b0001011); //0CH-7FH,8CH-FFH
 
 // check if this is an access to special register or not
 // only 1 signal of the following signals will be '1'
-assign addr_pcl     = (ram_adr_node[6:0] ==  7'b0000010);    // 02H, 82H
-assign addr_stat    = (ram_adr_node[6:0] ==  7'b0000011);    // 03H, 83H
-assign addr_fsr     = (ram_adr_node[6:0] ==  7'b0000100);    // 04H, 84H
-assign addr_aux_dat = (ram_adr_node[7:0] == 8'b00001000);    // 08H
-assign addr_pclath  = (ram_adr_node[6:0] ==  7'b0001010);    // 0AH, 8AH
-assign addr_intcon  = (ram_adr_node[6:0] ==  7'b0001011);    // 0BH, 8BH
+assign addr_pcl     = (ram_adr_node[6:0]    ==  7'b0000010);    // 02H, 82H
+assign addr_stat    = (ram_adr_node[6:0]    ==  7'b0000011);    // 03H, 83H
+assign addr_fsr     = (ram_adr_node[6:0]    ==  7'b0000100);    // 04H, 84H
 assign addr_aux_adr_lo = (ram_adr_node[7:0] == 8'b00000101); // 05H
 assign addr_aux_adr_hi = (ram_adr_node[7:0] == 8'b00000110); // 06H
+//7H and 8H 9H are taken by UART line ~400
+assign addr_aux_dat = (ram_adr_node[7:0]    == 8'b00001000);    // 08H // WAS EEPROM DATA
+assign addr_pclath  = (ram_adr_node[6:0]    ==  7'b0001010);    // 0AH, 8AH
+assign addr_intcon  = (ram_adr_node[6:0]    ==  7'b0001011);    // 0BH, 8BH
 
 // construct bit-mask for logical operations and bit tests
 assign mask_node = 1 << inst_reg[9:7];
@@ -744,6 +763,7 @@ begin
         status_reg[4]   <= 1;     // /T0 = 1
         status_reg[3]   <= 1;     // /PD = 1
         stack_pnt_reg   <= 0;     // Reset stack pointer
+        uart_sr_ff      <= 0;
     end  // End of reset assignments
     else if (~exec_stall_reg && clk_en_i)
     begin   // Execution ceases during a stall cycle.
@@ -865,6 +885,9 @@ begin
                 if (addr_intcon) intcon_reg <= aluout;         // write INTCON
                 if (addr_aux_adr_lo) aux_adr_lo_reg <= aluout; // write AUX low
                 if (addr_aux_adr_hi) aux_adr_hi_reg <= aluout; // write AUX high
+                // Paul Komurka
+                if (addr_uart_tx_data)  uart_tx_data <= aluout;
+                if (addr_uart_sr)       uart_sr_ff <= aluout;
             end
 
             // 2-5-2-3. Set/clear Z flag.
