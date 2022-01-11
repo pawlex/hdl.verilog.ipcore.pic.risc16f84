@@ -25,6 +25,16 @@ void sleepn(uint16_t target)
     }
 }
 
+void io_data_write(uint8_t val, uint16_t sleep)
+{
+    EEDATA = val;
+    if(sleep)
+    {
+        sleepn(sleep);
+    }
+}
+
+
 uint8_t uart_status()
 {
     uint8_t uart_status = UART_SR;
@@ -58,6 +68,21 @@ void get_uart(unsigned char *val)
     UART_SR = uart_status() & ~0x40;                    // unset RX READY
 }
 
+void led_scan(uint16_t sleep)
+{
+    uint8_t shift = 1;
+    do
+    {
+       shift = shift << 1;
+       io_data_write(shift, sleep);
+    } while (shift < 0x80);
+    do
+    {
+       shift = shift >> 1;
+       io_data_write(shift, sleep);
+    } while (shift > 0x1);
+}
+
 
 const unsigned char mystring[] = "Hello World!\n";
 unsigned char buf[sizeof(mystring)];
@@ -69,9 +94,10 @@ void main(void)
         for(uint8_t i=0; i<sizeof(mystring)-1; i++)
         {
             put_uart(&mystring[i]);
-            get_uart(&buf[i]);
+            //get_uart(&buf[i]);
         }
-        sleepn(0xFFFF);
+
+       led_scan(0x800);
     }
 }
 
