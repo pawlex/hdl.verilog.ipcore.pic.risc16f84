@@ -8,4 +8,5 @@
 *.cod
 *.asm
 *.mem
-
+*.rom
+_*

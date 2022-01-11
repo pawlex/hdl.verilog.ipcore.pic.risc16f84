@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 SIMFILES=( "./top_tb.v" "./dut_tb.v" )
-SIMFILES+=( "./risc16f84_clk2x.v" )
+SIMFILES+=( "./risc16f84_clk2x.v" "./uart/uart.v" "./uart/uart_tx.v" "./uart/uart_rx.v" )
 
 IVERILOG='iverilog'
 SIMFLAGS='-DSIMULATION'

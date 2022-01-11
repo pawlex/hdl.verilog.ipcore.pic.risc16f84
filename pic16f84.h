@@ -368,10 +368,10 @@ typedef struct
   unsigned RX_BUSY                   : 1;
   unsigned RX_OVERRUN                 : 1;
   unsigned RX_FRAME_ERROR                : 1;
-  unsigned                  : 1;
-  unsigned                      : 1;
-  unsigned                      : 1;
-  unsigned                      : 1;
+  unsigned TX_READY                 : 1;
+  unsigned TX_VALID                     : 1;
+  unsigned RX_READY                     : 1;
+  unsigned RX_VALID                     : 1;
   } __UART_SRbits_t;
 
 extern __at(0x008C) volatile __UART_SRbits_t UART_SRbits;
@@ -380,6 +380,10 @@ extern __at(0x008C) volatile __UART_SRbits_t UART_SRbits;
 #define _RX_BUSY                     0x02
 #define _RX_OVERRUN                  0x04
 #define _RX_FRAME_ERROR              0x08
+#define _TX_READY                    0x10
+#define _TX_VALID                    0x20
+#define _RX_READY                    0x40
+#define _RX_VALID                    0x80
 
 //==============================================================================
 //
@@ -430,6 +434,10 @@ extern __at(0x008C) volatile __UART_SRbits_t UART_SRbits;
 #define RX_BUSY                 UART_SRbits.RX_BUSY    
 #define RX_OVERRUN              UART_SRbits.RX_OVERRUN     
 #define RX_FRAME_ERROR          UART_SRbits.RX_FRAME_ERROR       
+#define TX_READY          UART_SRbits.TX_READY
+#define TX_VALID          UART_SRbits.TX_VALID       
+#define RX_READY          UART_SRbits.RX_READY
+#define RX_VALID          UART_SRbits.RX_VALID
 
 
 #define RBIF                    INTCONbits.RBIF                 // bit 0

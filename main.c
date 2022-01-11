@@ -18,6 +18,10 @@
  * UART_SRbits.RX_BUSY    
  * UART_SRbits.RX_OVERRUN     
  * UART_SRbits.RX_FRAME_ERROR     
+ * UART_SRbits.TX_READY
+ * UART_SRbits.TX_VALID
+ * UART_SRbits.RX_READY
+ * UART_SRbits.RX_VALID
  */
 
 void halt(void)
@@ -31,16 +35,21 @@ void halt(void)
 void main(void)
 {
     uint8_t foo = 0x55;
-    EEDATA = foo;
-    foo = EEDATA;
-    UART_TX = foo;
-    foo = UART_TX;
-    UART_RX = foo;
-    foo = UART_RX;
-    UART_SR = foo;
-    foo = UART_SR;
-
-
+    UART_SR = 0xFF;
+    UART_SR = 0x00;
+    UART_SR = 0xFF;
+    UART_SR = 0x00;
+    UART_SR = 0xFF;
+    UART_SR = 0x00;
+    UART_SR = 0xFF;
+     //UART_SR.TX_BUSY        = 0x1
+     //UART_SR.RX_BUSY        = 0x1
+     //UART_SR.RX_OVERRUN     = 0x1
+     //UART_SR.RX_FRAME_ERROR = 0x1
+     //UART_SR.TX_READY       = 0x1
+     //UART_SR.TX_VALID       = 0x1
+     //UART_SR.RX_READY       = 0x1
+     //UART_SR.RX_VALID       = 0x1
 
     for(uint8_t i=0;i<0xFF; i++)
     {

@@ -192,6 +192,7 @@ module risc16f84_clk2x (
            reset_i,              // Power-on reset (H active)
            clk_en_i,             // Clock enable for all clocked logic
            clk_i                 // Clock input
+
        );
 
 
@@ -350,6 +351,50 @@ wire next_exec_stall;
 //--------------------------------------------------------------------------
 // Instantiations
 //--------------------------------------------------------------------------
+
+
+wire utr;
+reg [7:0] uart_rx_data;
+reg [7:0] uart_tx_data;
+reg [7:0] uart_sr; // status register
+
+
+//UART_SRbits.TX_BUSY
+//UART_SRbits.RX_BUSY
+//UART_SRbits.RX_OVERRUN
+//UART_SRbits.RX_FRAME_ERROR
+//
+//UART_SRbits.TX_READY
+//UART_SRbits.TX_VALID
+//UART_SRbits.RX_READY
+//UART_SRbits.RX_VALID
+
+
+uart #(.DATA_WIDTH(8), .PRESCALE('d50_000_000 / (9600*8)))
+     pic_uart
+     (
+         .clk(clk),
+         .rst(~reset_n), // Active high reset.
+
+         .input_axis_tdata(uart_tx_data),
+         .input_axis_tvalid(uart_sr[4]),
+         .input_axis_tready(uart_sr[5]),
+
+         .output_axis_tdata(uart_rx_data),
+         .output_axis_tvalid(uart_sr[6]),
+         .output_axis_tready(uart_sr[7]),
+         // CONNECT THIS TO TOP OF MODULE
+         .rxd(utr),
+         .txd(utr),
+         // UART_SR
+         .tx_busy(uart_sr[0]),
+         .rx_busy(uart_sr[1]),
+         .rx_overrun_error(uart_sr[2]),
+         .rx_frame_error(uart_sr[3]),
+
+         // TODO:  Make this it's own register?
+         .prescale(10) // low value for testing
+     );
 
 
 //--------------------------------------------------------------------------
