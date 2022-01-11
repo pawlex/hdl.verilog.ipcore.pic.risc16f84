@@ -30,7 +30,7 @@ wire [RAM_DATA_WIDTH-1:0] ram_data_wr;
 //end
 integer i;
 initial begin
-    for(i=0;i<(1<<RAM_ADDR_WIDTH);i=i+1) $dumpvars(0,ram[i]);
+    //for(i=0;i<(1<<RAM_ADDR_WIDTH);i=i+1) $dumpvars(0,ram[i]);
 end
 
 assign ram_data_rd = ram[ram_addr];

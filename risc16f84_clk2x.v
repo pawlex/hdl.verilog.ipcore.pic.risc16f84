@@ -191,8 +191,11 @@ module risc16f84_clk2x (
            int0_i,               // PORT-B(0) INT
            reset_i,              // Power-on reset (H active)
            clk_en_i,             // Clock enable for all clocked logic
-           clk_i                 // Clock input
+           clk_i,                 // Clock input
 
+           uart_rx,            //Paul Komurka
+           uart_tx,
+           uart_prescale
        );
 
 
@@ -209,6 +212,16 @@ parameter QSLEEP_PP = 2'b11;  // sleep state
 
 
 // I/O declarations
+// Paul Komurka
+input wire uart_rx;
+output wire uart_tx;
+input wire [15:0] uart_prescale;
+
+`ifdef SIMULATION
+assign uart_rx = uart_tx;
+assign uart_prescale = 'h10;
+`endif
+
 
 // program ROM data bus/address bus
 input  [13:0] prog_dat_i;   // ROM read data
@@ -354,7 +367,6 @@ wire next_exec_stall;
 
 // Loopback UART TX->RX pin fer testings.
 wire addr_uart_rx_data, addr_uart_tx_data, addr_uart_sr;
-wire utr;
 
 // UART RX coming from the UART IP is latched below.
 wire [7:0] uart_rx_data;
@@ -403,8 +415,8 @@ uart #(.DATA_WIDTH(8))
          .output_axis_tvalid(uart_sr[4]),
          .output_axis_tready(uart_sr_ff[6]),
          // CONNECT THIS TO TOP OF MODULE
-         .rxd(utr),
-         .txd(utr),
+         .rxd(uart_rx),
+         .txd(uart_tx),
          // UART_SR
          .tx_busy(uart_sr[0]),
          .rx_busy(uart_sr[1]),
@@ -412,7 +424,7 @@ uart #(.DATA_WIDTH(8))
          .rx_frame_error(uart_sr[3]),
 
          // TODO:  Make this it's own register?
-         .prescale(10) // low value for testing
+         .prescale(uart_prescale) // low value for testing
      );
 
 //--------------------------------------------------------------------------

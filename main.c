@@ -3,6 +3,11 @@
 #include <string.h>
 #include <pic16f84.h>
 
+#define NOP __asm nop __endasm
+
+//volatile unsigned char UART_BUFFER[16];
+//volatile uint8_t uart_buffer_tail_ptr = 0;
+
 void halt(void)
 {
     while(1)
@@ -26,36 +31,48 @@ uint8_t uart_status()
     return uart_status;
 }
 
+//void uart_intr(void) __interrupt (0)
+//{
+//    UART_BUFFER[uart_buffer_tail_ptr] = UART_RX;
+//    uart_buffer_tail_ptr++;
+//    UART_SR = uart_status() | 0x40;
+//    UART_SR = uart_status() & ~0x40;
+//}
+
+
+
 void put_uart(unsigned char *val)
 {
     UART_TX = *val;
-    do{ sleepn(10); } while (!(uart_status() & 0x20)); // WAIT FOR TX READY
-    UART_SR = uart_status() | 0x80; // set TX VALID
-    do{ sleepn(10); } while (uart_status() & 0x20); // WAIT FOR TX NOT READY
-    UART_SR = uart_status() & ~0x80; // unset TX VALID
+    while (!(uart_status() & 0x20)) { NOP; };    // WAIT FOR TX READY
+    UART_SR = uart_status() | 0x80;                     // set TX VALID
+    while (uart_status() & 0x20) { NOP; };       // WAIT FOR TX NOT READY
+    UART_SR = uart_status() & ~0x80;                    // unset TX VALID
 }
 
-unsigned char get_uart()
+void get_uart(unsigned char *val)
 {
-    do{ sleepn(10); } while (!(uart_status() & 0x10)); // WAIT FOR RX VALID
-    sleepn(10);
-    unsigned char retval = UART_RX;
-    sleepn(10);
-    UART_SR = uart_status() | 0x40; // set RX READY
-    UART_SR = uart_status() & ~0x40; // unset RX READY
-    return retval;
+    while (!(uart_status() & 0x10)) { NOP; };    // WAIT FOR RX VALID
+    *val = UART_RX;
+    UART_SR = uart_status() | 0x40;                     // set RX READY
+    UART_SR = uart_status() & ~0x40;                    // unset RX READY
 }
+
+
 const unsigned char mystring[] = "Hello World!\n";
-char buf[16];
+unsigned char buf[sizeof(mystring)];
 
 void main(void)
 {
-    for(uint8_t i=0; i<sizeof(mystring); i++)
+    while(1)
     {
-        put_uart(&mystring[i]);
-        buf[i] = get_uart();
+        for(uint8_t i=0; i<sizeof(mystring)-1; i++)
+        {
+            put_uart(&mystring[i]);
+            get_uart(&buf[i]);
+        }
+        sleepn(0xFFFF);
     }
-    halt();
 }
 
 //typedef struct
