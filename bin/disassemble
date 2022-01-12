@@ -1,0 +1,1 @@
+gpdasm -p p16f84 -i ./main.hex 
