@@ -984,12 +984,13 @@ end  // End of process
 // rising edge trigger.)
 // When the interrupt is recognized, inte_sync_reg is cleared.
 
-
+wire int_combined;  assign int_combined = (uart_sr[4] | int0_i);
 always @(posedge clk_i)
 begin
-    if (clk_en_i) intrise_reg <= int0_i;
+    //if (clk_en_i) intrise_reg <= int0_i;
+    if (clk_en_i) intrise_reg <= int_combined;
 end // process
-assign intrise = (int0_i && ~intrise_reg);
+assign intrise = (int_combined && ~intrise_reg);
 
 //  The inte_sync_reg signal is used for waking up from SLEEP.
 //  (this flip flop is also a synchronizer to minimize the
