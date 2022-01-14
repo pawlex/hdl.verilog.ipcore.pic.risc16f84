@@ -11,4 +11,4 @@
 *.rom
 _*
 *.bak
-sim
+bak/*
