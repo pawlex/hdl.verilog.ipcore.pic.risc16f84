@@ -1,0 +1,407 @@
+#
+# sample rc file
+#
+
+# This allows replacement of menu accelerator keys. The special accelerator value of (null) means that no accelerator is bound to the menu item.
+accel "/File/Open New Window" <Control>N
+accel "/File/Open New Tab" <Control>T
+accel "/File/Reload Waveform" <Shift><Control>R
+accel "/File/Export/Write VCD File As" (null)
+accel "/File/Export/Write LXT File As" (null)
+accel "/File/Close" <Control>W
+accel "/File/Print To File" <Control>P
+accel "/File/Read Save File" <Control>O
+accel "/File/Write Save File" <Control>S
+accel "/File/Write Save File As" <Shift><Control>S
+accel "/File/Read Sim Logfile" <Control>L
+accel "/File/Read Verilog Stemsfile" (null)
+accel "/File/Quit/Yes, Quit" <Alt>Q
+accel "/File/Quit/Don't Quit" (null)
+accel "/Edit/Set Trace Max Hier" (null)
+accel "/Edit/Insert Blank" <Control>B
+accel "/Edit/Insert Comment" (null)
+accel "/Edit/Insert Analog Height Extension" (null)
+accel "/Edit/Alias Highlighted Trace" <Alt>A
+accel "/Edit/Remove Highlighted Aliases" <Shift><Alt>A
+accel "/Edit/Cut" <Control>X
+accel "/Edit/Paste" <Control>V
+accel "/Edit/Expand" F3
+accel "/Edit/Combine Down" F4
+accel "/Edit/Combine Up" F5
+accel "/Edit/Reduce Single Bit Vectors" F6
+accel "/Edit/Data Format/Hex" <Alt>X
+accel "/Edit/Data Format/Decimal" <Alt>D
+accel "/Edit/Data Format/Signed Decimal" (null)
+accel "/Edit/Data Format/Binary" <Alt>B
+accel "/Edit/Data Format/Octal" <Alt>O
+accel "/Edit/Data Format/ASCII" (null)
+accel "/Edit/Data Format/BitsToReal" (null)
+accel "/Edit/Data Format/Right Justify/On" <Alt>J
+accel "/Edit/Data Format/Right Justify/Off" <Shift><Alt>J
+accel "/Edit/Data Format/Invert/On" <Alt>I
+accel "/Edit/Data Format/Invert/Off" <Shift><Alt>I
+accel "/Edit/Data Format/Reverse Bits/On" <Alt>V
+accel "/Edit/Data Format/Reverse Bits/Off" <Shift><Alt>V
+accel "/Edit/Data Format/Translate Filter File/Disable" (null)
+accel "/Edit/Data Format/Translate Filter File/Enable and Select" (null)
+accel "/Edit/Data Format/Translate Filter Process/Disable" (null)
+accel "/Edit/Data Format/Translate Filter Process/Enable and Select" (null)
+accel "/Edit/Data Format/Analog/Off" (null)
+accel "/Edit/Data Format/Analog/Step" (null)
+accel "/Edit/Data Format/Analog/Interpolated" (null)
+accel "/Edit/Data Format/Analog/Interpolated Annotated" (null)
+accel "/Edit/Data Format/Analog/Resizing/Screen Data" (null)
+accel "/Edit/Data Format/Analog/Resizing/All Data" (null)
+accel "/Edit/Show-Change All Highlighted" (null)
+accel "/Edit/Show-Change First Highlighted" <Control>F
+accel "/Edit/Time Warp/Warp Marked" (null)
+accel "/Edit/Time Warp/Unwarp Marked" (null)
+accel "/Edit/Time Warp/Unwarp All" (null)
+accel "/Edit/Exclude" <Shift><Alt>E
+accel "/Edit/Show" <Shift><Alt>S
+accel "/Edit/Expand All Groups" F12
+accel "/Edit/Collapse All Groups" <Shift>F12
+accel "/Edit/Highlight Regexp" <Alt>R
+accel "/Edit/UnHighlight Regexp" <Shift><Alt>R
+accel "/Edit/Highlight All" <Control>A
+accel "/Edit/UnHighlight All" <Shift><Control>A
+accel "/Edit/Sort/Alphabetize All" (null)
+accel "/Edit/Sort/Alphabetize All (CaseIns)" (null)
+accel "/Edit/Sort/Sigsort All" (null)
+accel "/Edit/Sort/Reverse All" (null)
+accel "/Search/Pattern Search" (null)
+accel "/Search/Signal Search Regexp" <Alt>S
+accel "/Search/Signal Search Hierarchy" <Alt>T
+accel "/Search/Signal Search Tree" <Shift><Alt>T
+accel "/Search/Autocoalesce" (null)
+accel "/Search/Autocoalesce Reversal" (null)
+accel "/Search/Autoname Bundles" (null)
+accel "/Search/Search Hierarchy Grouping" (null)
+accel "/Time/Move To Time" F1
+accel "/Time/Zoom/Zoom Amount" F2
+accel "/Time/Zoom/Zoom Base" <Shift>F2
+accel "/Time/Zoom/Zoom In" <Alt>Z
+accel "/Time/Zoom/Zoom Out" <Shift><Alt>Z
+accel "/Time/Zoom/Zoom Full" <Alt>F
+accel "/Time/Zoom/Zoom Best Fit" <Shift><Alt>F
+accel "/Time/Zoom/Zoom To Start" Home
+accel "/Time/Zoom/Zoom To End" End
+accel "/Time/Zoom/Undo Zoom" <Alt>U
+accel "/Time/Fetch/Fetch Size" F7
+accel "/Time/Fetch/Fetch ->" <Alt>2
+accel "/Time/Fetch/Fetch <-" <Alt>1
+accel "/Time/Discard/Discard ->" <Alt>4
+accel "/Time/Discard/Discard <-" <Alt>3
+accel "/Time/Shift/Shift ->" <Alt>6
+accel "/Time/Shift/Shift <-" <Alt>5
+accel "/Time/Page/Page ->" <Alt>8
+accel "/Time/Page/Page <-" <Alt>7
+accel "/Markers/Show-Change Marker Data" <Alt>M
+accel "/Markers/Drop Named Marker" <Alt>N
+accel "/Markers/Collect Named Marker" <Shift><Alt>N
+accel "/Markers/Collect All Named Markers" <Shift><Control><Alt>N
+accel "/Markers/Delete Primary Marker" <Shift><Alt>M
+accel "/Markers/Wave Scrolling" F9
+accel "/View/Show Grid" <Alt>G
+accel "/View/Show Mouseover" (null)
+accel "/View/Show Base Symbols" <Alt>F1
+accel "/View/Dynamic Resize" <Alt>9
+accel "/View/Center Zooms" F8
+accel "/View/Toggle Max-Marker" F10
+accel "/View/Constant Marker Update" F11
+accel "/View/Draw Roundcapped Vectors" <Alt>F2
+accel "/View/Left Justified Signals" <Shift>Home
+accel "/View/Right Justified Signals" <Shift>End
+accel "/View/Zoom Pow10 Snap" <Shift>Pause
+accel "/View/Full Precision" <Alt>Pause
+accel "/View/Remove Pattern Marks" (null)
+accel "/View/Use Color" (null)
+accel "/View/Use Black and White" (null)
+accel "/View/LXT Clock Compress to Z" (null)
+accel "/Help/WAVE Help" <Control>H
+accel "/Help/Wave Version" (null)
+
+# This allows another character in addition to the hier_delimeter to be used to delimit levels in the hierarchy for VCD. Only the first character in the value is significant. Note that this is normally off. The intended use is to resolve the hierarchies of netlist based models that often contain slashes to delimit hierarchy inside of $var statements. 
+#alt_hier_delimeter
+
+# Allows the specification of a prefix hierarchy for VCD files. This can be done in "pieces," so that multiple layers of hierarchy are prepended to symbol names with the most significant addition occurring first (see .gtkwaverc in the examples/vcd directory). The intended use of this is to have the ability to add "project" prefixes which allow easier selection of everything from the tree hierarchy. 
+#append_vcd_hier
+
+# Speeds up vcd loading and takes up less memory. The downside is that atomic vectors are treated internally as a single bit and can't be coalesced into larger vectors or split up. Because of this single bit nature, the bundle down and bundle up operations when used in Signal Search Regexp , Signal Search Hierarchy, and Signal Search Tree will perfom seemingly unpredictably. 
+# Note that savefiles are largely incompatible between atomic and non-atomic modes (i.e., signal information is stored differently). This variable normally defaults to "on" and it is suggested that it remain there unless vector splitting is a necessity. 
+atomic_vectors yes
+
+# A nonzero value enables autocoalescing of VCD vectors when applicable. This may be toggled dynamically during wave viewer usage. 
+#autocoalesce
+
+# causes split vectors to be reconstructed in reverse order (only if autocoalesce is also active). 
+#autocoalesce_reversal
+
+# A nonzero value indicates that GTKWave will create its own bundle names rather than prompting the user for them. 
+#autoname_bundles
+
+# trace color when 0
+color_0      blue 
+
+# trace color when 1
+color_1      blue 
+
+# background color
+color_back   white
+
+# middle mouse button marker color
+color_baseline magenta
+
+# trace color when don't care ("-")
+color_dash   green 
+
+# trace color (inside of box) when don't care ("-")
+color_dashfill lightgreen 
+
+# color value for "dark blue" in signal window.
+#color_dkblue <value>
+
+# color value for "dark gray" in signal window.
+#color_dkgray <value>
+
+# grid color (use Alt-G/Shift-Alt-G to show/hide grid)
+color_grid   lavender 
+
+# trace color when high ("H")
+color_high   blue 
+
+# trace color when low ("L")
+color_low    blue 
+
+# color value for "light gray" in signal window.
+#color_ltgray <value>
+
+# color of the named markers
+color_mark   blue 
+
+# color value for "medium gray" in signal window.
+#color_mdgray <value>
+
+# trace color when floating ("Z")
+color_mid    maroon 
+
+# color value for "normal" GTK state in signal window.
+#color_normal <value>
+
+# text color for timebar
+color_time   black 
+
+# text color for timebar's background
+color_timeb  gray 
+
+# trace color when transitioning
+color_trans  gray 
+
+# trace color when undefined ("U")
+color_u      yellow 
+
+# trace color (inside of box) when undefined ("U")
+color_ufill  lightyellow 
+
+# color of the unnamed (primary) marker
+color_umark  blue 
+
+# text color for vector values
+color_value  black 
+
+# vector color (horizontal)
+color_vbox   black 
+
+# vector color (verticals/transitions)
+color_vtrans gray 
+
+# trace color when weak ("W")
+color_w      orange 
+
+# trace color (inside of box) when weak ("W")
+color_wfill  peachpuff 
+
+# trace color when undefined ("X") (collision for VHDL)
+color_x      red 
+
+# trace color (inside of box) when undefined ("X") (collision for VHDL)
+color_xfill  lightsalmon 
+
+# A nonzero value indicates that the values for traces listed in the signal window are to be updated constantly when the left mouse button is being held down rather than only when it is first pressed then when released (which is the default). 
+constant_marker_update yes
+
+# Use zero for tabbed viewing with named tabs at the top. Nonzero places numerically indexed tabs at the left.
+#context_tabposition <value>
+
+# Converts all integer and parameter VCD declarations to real-valued ones when set to a nonzero/yes value. The positive aspect of this is that integers and parameters will take up less space in memory and will automatically display in decimal format. The negative aspect of this is that integers and parameters will only be displayable as decimals and can't be bit reversed, inverted, etc. 
+#convert_to_reals
+
+# A nonzero value indicates the number of pixels the marker should snap to for the nearest signal transition. 
+#cursor_snap 8
+
+# A nonzero value indicates that signal/value tooltip pop up bubbles on mouse button presses should be disabled in the value window. A zero value indicates that value tooltips should be active. (default is disabled).
+#disable_mouseover <value>
+
+# A nonzero value indicates that tooltip pop up bubbles should be disabled. A zero value indicates that tooltips should be active (default). 
+#disable_tooltips
+
+# A nonzero value indicates that the trace should initially be crunched to fit the screen. A zero value indicates that the initial zoom should be zero (default). 
+#do_initial_zoom_fit
+
+# A nonzero value indicates that dynamic resizing should be initially enabled (default). A zero value indicates that dynamic resizing should be initially disabled. 
+dynamic_resizing 1
+
+# Allows exit without bringing up a confirmation requester.
+#enable_fast_exit <value>
+
+# lets the user turn on/off the ghost marker during primary marker dragging. Default is enabled. 
+#enable_ghost_marker
+
+# A nonzero value indicates that when grid drawing is enabled, horizontal lines are to be drawn. This is the default. 
+enable_horiz_grid yes
+
+# causes the vcd loader to automatically generate a .sav file (vcd_autosave.sav ) in the cwd if a save file is not specified on the command line. Note that this mirrors the VCD $var defs and no attempt is made to coalesce split bitvectors back together. 
+enable_vcd_autosave 0
+
+# A nonzero value indicates that when grid drawing is enabled, vertical lines are to be drawn. This is the default. Note that all possible combinations of enable_horiz_grid and enable_vert_grid values are acceptable. 
+#enable_vert_grid
+
+# When followed by an argument, this indicates the name of the X11 font that you wish to use for the logfile browser. You may generate appropriate fontnames using the xfontsel program.
+#fontname_logfile <value>
+
+# When followed by an argument, this indicates the name of the X11 font that you wish to use for signals. You may generate appropriate fontnames using the xfontsel program. 
+#fontname_signals
+
+# When followed by an argument, this indicates the name of the X11 font that you wish to use for waves. You may generate appropriate fontnames using the xfontsel program. Note that the signal font must be taller than the wave font or the viewer will complain then terminate. 
+#fontname_waves
+
+# When enabled, this forces everything above the signal and wave windows to be rendered as toolbars. This allows for them to be detached which allows for more usable wave viewer space. By default this is off. 
+force_toolbars 0
+
+# Hides the Signal Search Tree widget for GTK2.4 and greater such that it is not embedded into the main viewer window. It is still reachable as an external widget through the menus.
+#hide_sst <value>
+
+# This allows characters other than '/' to be used to delimit levels in the hierarchy. Only the first character in the value is significant. 
+#hier_delimeter
+
+# For the tree widgets, this allows the hierarchies to be grouped in a single place rather than spread among the netnames.
+#hier_grouping <value>
+
+# Sets the maximum hierarchy depth (from the right side) to display for trace names. Note that a value of zero displays the full hierarchy name. 
+# From GHDL: The second format is the GHDL Waveform format. It is a binary format, whose specifications are not yet fully frozen. 
+# Recent versions of GTKWave can read this format. Do not forget to set hier_max_level to 0 to see the full signal name. Also, vectors are always expanded. 
+hier_max_level 1
+
+# A nonzero value indicates that the horizontal pane should be constructed using the gtk_paned_pack functions (default and recommended). A zero value indicates that gtk_paned_add will be used instead. 
+hpane_pack 1
+
+# If nonzero, specifies that the window position attribute is to be ignored during savefile loading and is to be skipped during saving. Default is that the position attribute is used.
+#ignore_savefile_pos <value>
+
+# If nonzero, specifies that the window size attribute is to be ignored during savefile loading and is to be skipped during saving. Default is that the size attribute is used.
+#ignore_savefile_size <value>
+
+# Sets the size of the initial width of the wave viewer window. Values less than or equal to zero will set the initial width equal to -1 which will let GTK determine the minimum size. 
+#initial_window_x 700
+
+# Sets the size of the initial x coordinate of the wave viewer window. -1 which will let the window manager determine the position.
+#initial_window_xpos 50
+
+# Sets the size of the initial height of the wave viewer window. Values less than or equal to zero will set the initial width equal to -1 which will let GTK determine the minimum size. 
+#initial_window_y 400
+
+# Sets the size of the initial y coordinate of the wave viewer window. -1 which will let the window manager determine the position.
+#initial_window_ypos 50
+
+# When nonzero, indicates that the signal window signal name justification should default to left, else the justification is to the right (default). 
+#left_justify_sigs
+
+# For LXT (not LXT2) allows clocks to compress to a 'z' value so that regular/periodic value changes may be noted.
+#lxt_clock_compress_to_z <value>
+
+# Sets the scroll amount for page left and right operations. (The buttons, not the hscrollbar.) Values over 1.0 are taken as 1/x and values equal to and less than 1.0 are taken literally. (i.e., 2 gives a half-page scroll and .67 gives 2/3). The default is 1.0. 
+#page_divisor
+
+# sets the maximum number of characters that can be printed for a value in the signal window portion of a postscript file (not including the net name itself). Legal values are 4 through 66 (default). 
+#ps_maxveclen
+
+# A nonzero value (default) indicates that the numeric base symbols for hexadecimal ('$'), binary ('%'), and octal ('#') should be rendered. Otherwise they will be omitted. 
+show_base_symbols no
+
+# A nonzero value (default) indicates that a grid should be drawn behind the traces. A zero indicates that no grid should be drawn. 
+show_grid yes
+
+# Turning this off enables the splash screen with the GTKWave mascot when loading a trace. Default is on. 
+splash_disable on
+
+# When true (default) allows the SST dialog signal filter to filter signals while keys are being pressed, otherwise enter must be pressed to cause the filter to go active.
+#sst_dynamic_filter <value>
+
+# When true allows the SST dialog (when not hidden) to come up already expanded.
+#sst_expanded <value>
+
+# A nonzero value indicates that any text rendered into the wave window will use fonts that are four points larger in size than normal. This can enhance readability. A zero value indicates that normal font sizes should be used. 
+use_big_fonts no
+
+# Allows you to switch between the delta time and frequency display in the upper right corner of the main window when measuring distances between markers. Default behavior is that the delta time is displayed (off).
+#use_frequency_delta <value>
+
+# does not round time values when the number of ticks per pixel onscreen is greater than 10 when active. The default is that this feature is disabled. 
+#use_full_precision
+
+# A nonzero value indicates that the hashmarks used for the timescales should be based around 50 pixels rather than 40/48 pixels. 
+#use_larger_scale
+
+# A nonzero value indicates that the maximum time will be displayed in the upper right corner of the screen. Otherwise, the current primary (unnamed) marker time will be displayed. This can be toggled at any time with the Toggle Max-Marker menu option. 
+use_maxtime_display 0
+
+# Allows accelerated redraws of the signalwindow that can be done because the font width is constant. Default is off. 
+use_nonprop_fonts no
+
+# Uses anti-aliased pango fonts (GTK2) rather than bitmapped X11 ones. Default is on.
+#use_pango_fonts on
+
+# A nonzero value indicates that vector traces should be drawn with rounded caps rather than perpendicular ones. The default for this is zero. 
+use_roundcaps 1
+
+# A nonzero value indicates that the page, shift, fetch, and discard buttons should not be drawn (i.e., time manipulations should be through the scrollbar only rather than front panel buttons). The default for this is zero. 
+#use_scrollbar_only
+
+# A nonzero value indicates that normal GTK click semantics should be used in the signalwindow. Default behavior is off: gtkwave semantics are used.
+#use_standard_clicking on
+
+# A nonzero value indicates that a toolbar with buttons should be at the top of the screen instead of the traditional style gtkwavebutton groups. Default is on.
+#use_toolbutton_interface on
+
+# indicates that signal names should be stored internally as name.bitnumber when enabled. When disabled, a more "normal" ordering of name[bitnumber] is used. Note that when disabled, the Bundle Up and Bundle Down options are disabled in the Signal Search Regexp, Signal Search Hierarchy, and Signal Search Tree options. This is necessary as the internal data structures for signals are represented with one "less" level of hierarchy than when enabled and those functions would not work properly. This should not be an issue if atomic_vectors are enabled. Default for vcd_explicit_zero_subscripts is disabled. 
+vcd_explicit_zero_subscripts no
+
+# indicates that any repeat equal values for a net spanning different time values in the vcd file are not to be compressed into a single value change but should remain in order to allow glitches to be present for this case. Default for vcd_preserve_glitches is disabled. 
+#vcd_preserve_glitches
+
+# produces a warning message if the VCD filesize is greater than the argument's size in MB. Set to zero to disable this.
+#vcd_warning_filesize <value>
+
+# indicates the number of pixels of extra whitespace that should be added to any strings for the purpose of calculating text in vectors. Permissible values are 0 to 16 with the default being 4. 
+#vector_padding
+
+# indicates the value to pass to zlib during vlist processing (which is used in the VCD recoder). -1 disables compression, 0-9 correspond to the value zlib expects. 4 is default.
+#vlist_compression 4
+
+# indicates that the VCD recoder should pre-compress data going into the value change vlists in order to reduce memory usage.This is done before potential zlib packing. Default is off.
+#vlist_prepack off
+
+# indicates that the VCD recoder should spill all generated vlists to a tempfile on disk in order to reduce memory usage. Default is off.
+#vlist_spill off
+
+# a nonzero value enables scrolling by dragging the marker off the left or right sides of the wave window. A zero value disables it. 
+#wave_scrolling
+
+# allows setting of the zoom base with a value between 1.5 and 10.0. Default is 2.0. 
+#zoom_base
+
+# a nonzero value enables center zooming, a zero value disables it. 
+#zoom_center
+
+# corresponds to the Zoom Pow10 Snap menu option listed above. Default for this is disabled (zero). 
+zoom_pow10_snap on
