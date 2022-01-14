@@ -8,8 +8,8 @@ module intctrl
            input reset_n,
            input [15:0] address_i,
            input  [NUM_VECTORS-1:0] vector_i,
-           inout  [NUM_VECTORS-1:0] data_io
-
+           inout  [NUM_VECTORS-1:0] data_io,
+           output int_o
        );
 
 parameter NUM_VECTORS = 8;
@@ -19,6 +19,7 @@ reg [NUM_VECTORS-1:0]vector_ff; // The latched vector
 
 // LOGIC //
 assign data_io = (address_i == RD_ADDRESS) ? vector_ff : 8'hzz;
+assign int_o = (vector_ff);
 
 always @* begin
     if(!reset_n) vector_ff = 0; else

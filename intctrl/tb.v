@@ -12,7 +12,7 @@ initial begin
     reset_n = 0;
     #10;
     reset_n = 1;
-    #1000 $finish;
+    #2000 $finish;
 end
 
 initial begin
@@ -38,7 +38,38 @@ initial begin
     bus_address = 16'h00FF;
     repeat(4) @(posedge clk);
     bus_address = 16'h0000;
-    #10 wr=0;
+    @(posedge clk);
+    wr=0;
+    //
+    repeat(4) @(posedge clk);
+    interrupt_vector[0] = 1;
+    repeat(4) @(posedge clk);
+    interrupt_vector[1] = 1;
+    repeat(4) @(posedge clk);
+    interrupt_vector[2] = 1;
+    repeat(4) @(posedge clk);
+    interrupt_vector[3] = 1;
+    repeat(4) @(posedge clk);
+    interrupt_vector[4] = 1;
+    repeat(4) @(posedge clk);
+    interrupt_vector[5] = 1;
+    repeat(4) @(posedge clk);
+    interrupt_vector[6] = 1;
+    repeat(4) @(posedge clk);
+    interrupt_vector[7] = 1;
+    repeat(4) @(posedge clk);
+    ///
+    bus_address = 16'h00EF;
+    repeat(30) @(posedge clk);
+    interrupt_vector = 0;
+    repeat(4) @(posedge clk);
+    bus_data_ff = 8'h00;
+    wr = 1;
+    bus_address = 16'h00FF;
+    repeat(4) @(posedge clk);
+    bus_address = 16'h0000;
+    @(posedge clk);
+    wr=0;
 end
 
 
