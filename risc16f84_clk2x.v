@@ -986,12 +986,12 @@ end  // End of process
 
 wire int_combined;  assign int_combined = (uart_sr[4] | int0_i);
 always @(posedge clk_i or posedge reset_i)
-	if(reset_i) intrise_reg <= 0;
-else begin
+    if(reset_i) intrise_reg <= 0;
+    else begin
 
-    //if (clk_en_i) intrise_reg <= int0_i;
-    if (clk_en_i) intrise_reg <= int_combined;
-end // process
+        //if (clk_en_i) intrise_reg <= int0_i;
+        if (clk_en_i) intrise_reg <= int_combined;
+    end // process
 assign intrise = (int_combined && ~intrise_reg);
 
 //  The inte_sync_reg signal is used for waking up from SLEEP.

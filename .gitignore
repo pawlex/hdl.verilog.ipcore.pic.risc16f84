@@ -10,3 +10,5 @@
 *.mem
 *.rom
 _*
+*.bak
+sim

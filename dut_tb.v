@@ -19,7 +19,7 @@ assign rom_data = rom[rom_addr];
 
 // BEGIN RAM SECTION.
 parameter RAM_DATA_WIDTH = 8;
-parameter RAM_ADDR_WIDTH = 7;
+parameter RAM_ADDR_WIDTH = 8;
 reg  [RAM_DATA_WIDTH-1:0] ram [1<<RAM_ADDR_WIDTH];
 wire [RAM_ADDR_WIDTH-1:0] ram_addr;
 wire [RAM_DATA_WIDTH-1:0] ram_data_rd;
@@ -30,7 +30,7 @@ wire [RAM_DATA_WIDTH-1:0] ram_data_wr;
 //end
 integer i;
 initial begin
-    //for(i=0;i<(1<<RAM_ADDR_WIDTH);i=i+1) $dumpvars(0,ram[i]);
+    for(i=0;i<(1<<RAM_ADDR_WIDTH);i=i+1) $dumpvars(0,ram[i]);
 end
 
 assign ram_data_rd = ram[ram_addr];
@@ -51,8 +51,21 @@ assign aux_data = aux_wr_stb ? {AUX_DATA_WIDTH{1'bz}} : aux_ram[aux_addr];
 always @(posedge clk) if(aux_wr_stb) aux_ram[aux_addr] <= aux_data;
 
 // BEGIN INTERRUPT (Not tested as per the notes).
-wire int0;
-assign int0 = 0;
+//wire int0;
+//assign int0 = 0;
+
+reg int0 = 0;
+
+// Generate interrupts
+//initial begin
+//    int0=0;
+//    forever #10000  begin
+//        int0=1;
+//        repeat(10) @(posedge clk);
+//        int0=0;
+//    end
+//end
+
 
 // BEGIN CLOCK ENABLE
 wire clken;
