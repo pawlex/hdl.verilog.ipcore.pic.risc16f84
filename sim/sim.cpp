@@ -19,14 +19,26 @@ double sc_time_stamp() {
     return main_time;  // Note does conversion to real, to match SystemC
 }
 
+Vtop* top = new Vtop;  // Or use a const unique_ptr, or the VL_UNIQUE_PTR wrapper
+
+void toggle_clock(void)
+{
+    top->clk = !top->clk;
+    top->eval();
+    top->clk = !top->clk;
+    top->eval();
+    main_time += 2;
+}
+
+
 int main(int argc, char** argv, char** env) {
     //putchar(0x40);
 
     // Construct the Verilated model, from Vtop.h generated from Verilating "top.v"
-    Vtop* top = new Vtop;  // Or use a const unique_ptr, or the VL_UNIQUE_PTR wrapper
+    //Vtop* top = new Vtop;  // Or use a const unique_ptr, or the VL_UNIQUE_PTR wrapper
 
     // SETUP STUFF
-    top->uart_prescale = (0x80); // Set a very low prescale for sim.
+    top->uart_prescale = (0x10); // Set a very low prescale for sim.
     //printf("Initial baud: 0x%04x\n", top->uart_prescale);
 
 
@@ -46,12 +58,14 @@ int main(int argc, char** argv, char** env) {
     Verilated::commandArgs(argc, argv);
 
 
-    // Set some inputs
-    top->reset_n = 1;
+    // Simple reset logic
+    top->reset_n = 0;
     top->clk = 0;
-
-    printf("Starting up\n");
-    // Simulate until $finish
+    toggle_clock();
+    toggle_clock();
+    toggle_clock();
+    toggle_clock();
+    top->reset_n = 1;
 
 
     int myinput = 0;
@@ -60,58 +74,53 @@ int main(int argc, char** argv, char** env) {
     noecho();
     cbreak();
     nodelay(stdscr, TRUE);
+    //timeout(0);
     getmaxyx(stdscr,row,col);	
     scrollok(stdscr, TRUE);
     int myrow = 0;
     int mycol = 0;
-    uint8_t counter = 0;
-    int keypress;
+    int keypress = ERR;
+
+    int rx_counter = 0;
     while (!Verilated::gotFinish()) {
-        main_time++;  // Time passes...
-        top->clk = !top->clk;
-        if(counter)
+        // Handle the input first, because the lag gets nasty.
+        keypress = getch();
+        if(top->uart_tx_ready_o)
         {
-            // Spin here until it's time to deassert ready.
-            //printf("!");
-            counter--;
-            top->eval();
-            main_time++;
-        }
-        if(top->uart_rx_ready_i)
-        {
-            top->uart_rx_ready_i = 0;
-            top->eval();
-            top->eval();
-            main_time++;
-            main_time++;
+            if(keypress != ERR)
+            {
+                top->uart_tx_data_i = keypress;
+                top->uart_tx_valid_i = 1;
+                toggle_clock();
+                top->uart_tx_valid_i = 0;
+                keypress = ERR;
+            }
+        } else {
+            // Uart was busy so let's throw it back on the stack;
+            ungetch(keypress);
         }
 
-        if (main_time > 1 && main_time < 10) {
-            top->reset_n = !1;  // Assert reset
+
+        if(rx_counter == 0)
+        {
+            top->uart_rx_ready_i = 0;
+
+            // Write the UART output
+            if(top->uart_rx_valid_o)
+            {
+                char mychar = (char) top->uart_rx_data_o;
+                printw("%c", mychar);
+                refresh();
+                top->uart_rx_ready_i = 1;
+                rx_counter = 2;
+            }
+
         } else {
-            top->reset_n = !0;  // Deassert reset
+            rx_counter--;
         }
-        // Write the UART output
-        if(top->uart_rx_valid_o)
-        {
-            char mychar = (char) top->uart_rx_data_o;
-            printw("%c", mychar);
-            refresh();
-            top->uart_rx_ready_i = 1;
-            counter = 20;
-        }
-        // Read the user input
-        int keypress = getch();
-        if(keypress != ERR && top->uart_tx_ready_o)
-        {
-            top->uart_tx_valid_i = 1;
-            top->eval();
-            top->eval();
-            top->eval();
-            top->eval();
-            top->uart_tx_valid_i = 0;
-            main_time += 4;
-        }
+        
+        main_time++;
+        top->clk = !top->clk;
         top->eval();
     }
 
