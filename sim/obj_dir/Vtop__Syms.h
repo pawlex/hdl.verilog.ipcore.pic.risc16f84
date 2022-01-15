@@ -11,6 +11,7 @@
 
 // INCLUDE MODULE CLASSES
 #include "Vtop.h"
+#include "Vtop_uart.h"
 
 // SYMS CLASS
 class Vtop__Syms : public VerilatedSyms {
@@ -22,9 +23,11 @@ class Vtop__Syms : public VerilatedSyms {
     
     // SUBCELL STATE
     Vtop*                          TOPp;
+    Vtop_uart                      TOP__top__DOT__pic__DOT__pic_uart;
+    Vtop_uart                      TOP__top__DOT__tb_uart;
     
     // COVERAGE
-    uint32_t __Vcoverage[667];
+    uint32_t __Vcoverage[653];
     
     // CREATORS
     Vtop__Syms(Vtop* topp, const char* namep);

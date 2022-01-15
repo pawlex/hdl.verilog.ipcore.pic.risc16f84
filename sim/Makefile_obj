@@ -25,12 +25,12 @@ COMPILE.cc = $(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c
 
 # Override some default compile flags
 CPPFLAGS += -MMD -MP
-CPPFLAGS += -DVL_DEBUG=1
+CPPFLAGS += -DVL_DEBUG=1 -lncurses
 # Turn on some more flags (when configured appropriately)
 # For testing inside Verilator, "configure --enable-ccwarn" will do this
 # automatically; otherwise you may want this unconditionally enabled
 ifeq ($(CFG_WITH_CCWARN),yes)	# Local... Else don't burden users
-USER_CPPFLAGS_WALL += -W -Werror -Wall
+USER_CPPFLAGS_WALL += -W -Werror -Wall -lncurses
 endif
 
 # See the benchmarking section of bin/verilator.
@@ -46,7 +46,7 @@ OPT_FAST = -O2 -fstrict-aliasing
 # Linking final exe -- presumes have a sim_main.cpp
 
 # Special compile rule
-sim_main.o: sim_main.cpp $(VM_PREFIX).h
+sim_main.o: sim_main.cpp $(VM_PREFIX).h -lncurses
 
 ######################################################################
 ######################################################################

@@ -7,18 +7,23 @@
 module top(
     input clk, 
     input reset_n,
-    input   wire    [30:0]  i_setup,
-    input uart_rx,
-    output uart_tx,
-    input [15:0] uart_prescale
-    
+    //
+    //input   wire    [30:0]  i_setup,
+    //input uart_rx,
+    //output uart_tx,
+    //
+    input [15:0] uart_prescale,
+    input [7:0] uart_tx_data_i,
+    output [7:0] uart_rx_data_o,
+    input uart_rx_ready_i,
+    input uart_tx_valid_i,
+    output uart_rx_valid_o,
+    output uart_tx_ready_o
 );
-// VERILATOR UART HOOKS
-`ifdef  OPT_STANDALONE
-    parameter   INITIAL_UART_SETUP = 31'd868;
-    assign  i_setup = INITIAL_UART_SETUP;
-`endif
 
+//wire [7:0] uart_rx_data_i, uart_tx_data_o;
+//wire uart_rx_valid_o, uart_tx_valid_i;
+//wire uart_rx_ready_i, uart_tx_ready_o;
 
 
 
@@ -84,5 +89,28 @@ risc16f84_clk2x pic (
                     .uart_tx(uart_tx),
                     .uart_prescale(uart_prescale)
                 );
+
+// Instantiate the UART again, to give us console access
+// to the test bench. :)
+wire uart_rx_i, uart_tx_o, uart_rx, uart_tx;
+assign uart_rx_i = uart_tx;
+assign uart_rx = uart_tx_o;
+/* verilator lint_off PINMISSING */
+uart tb_uart
+(
+    .clk(clk),
+    .rst(!reset_n),
+    .input_axis_tdata(uart_tx_data_i),
+    .input_axis_tvalid(uart_tx_valid_i),
+    .input_axis_tready(uart_tx_ready_o),
+
+    .output_axis_tdata(uart_rx_data_o),
+    .output_axis_tvalid(uart_rx_valid_o),
+    .output_axis_tready(uart_rx_ready_i),
+    .rxd(uart_rx_i),
+    .txd(uart_tx_o),
+    .prescale(uart_prescale)
+);
+/* verilator lint_on PINMISSING */
 
 endmodule

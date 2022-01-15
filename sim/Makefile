@@ -34,7 +34,7 @@ endif
 
 VERILATOR_FLAGS =
 # Generate C++ in executable form
-VERILATOR_FLAGS += -cc --exe
+VERILATOR_FLAGS += -cc --exe -LDFLAGS -lncurses
 # Generate makefile dependencies (not shown as complicates the Makefile)
 #VERILATOR_FLAGS += -MMD
 # Optimize
@@ -54,8 +54,8 @@ VERILATOR_FLAGS += --coverage
 VERILATOR_FLAGS += -Wno-fatal
 
 # Input files for Verilator
-VERILATOR_INPUT = -f input.vc top.v ../risc16f84_clk2x.v ../uart/uart.v ../uart/uart_tx.v ../uart/uart_rx.v sim.cpp uartsim.cpp
-
+VERILATOR_INPUT = -f input.vc top.v sim.cpp
+VERILATOR_INPUT += ../risc16f84_clk2x.v ../uart/uart.v ../uart/uart_tx.v ../uart/uart_rx.v
 ######################################################################
 default: compile
 
@@ -72,7 +72,7 @@ compile:
 # To compile, we can either just do what Verilator asks,
 # or call a submakefile where we can override the rules ourselves
 #	$(MAKE) -j 4 -C obj_dir -f Vtop.mk
-	$(MAKE) -j 4 -C obj_dir -f ../Makefile_obj
+	$(MAKE) -j 4 -lncurses -C obj_dir -f ../Makefile_obj
 
 run: compile
 
