@@ -200,8 +200,8 @@ module risc16f84_clk2x (
 
 
 // You can change the following parameters as you would like
-parameter STACK_SIZE_PP      = 8;   // Size of PC stack
-parameter LOG2_STACK_SIZE_PP = 3;   // Log_2(stack_size)
+parameter STACK_SIZE_PP      = 16;   // Size of PC stack
+parameter LOG2_STACK_SIZE_PP = 4;   // Log_2(stack_size)
 
 // State definitions for state machine, provided as parameters to allow
 // for redefinition of state values by the instantiator if desired.
@@ -370,7 +370,7 @@ wire addr_uart_rx_data, addr_uart_tx_data, addr_uart_sr;
 
 // UART RX coming from the UART IP is latched below.
 wire [7:0] uart_rx_data;
-assign ram_i_node = (addr_uart_rx_data) ? uart_rx_data : 8'hzz;
+assign ram_i_node = (addr_uart_rx_data) ? uart_rx_data : 8'bZ;
 
 // UART TX needs to come from the REGISTER FILE.
 reg [7:0] uart_tx_data;
@@ -380,7 +380,7 @@ reg [7:0] uart_tx_data;
 reg [7:0] uart_sr_ff; // status register [5:0] are read-only.
 wire [7:0] uart_sr;
 wire [7:0] uart_sr_comb = {uart_sr_ff[7:6], uart_sr[5:0]};
-assign ram_i_node = (addr_uart_sr) ? uart_sr_comb : 8'hzz;
+assign ram_i_node = (addr_uart_sr) ? uart_sr_comb : 8'bZ;
 
 assign addr_uart_tx_data = (ram_adr_node[7:0]    == 8'h07);
 assign addr_uart_rx_data = (ram_adr_node[7:0]    == 8'h87);
@@ -570,14 +570,14 @@ always @(
     )
 begin
     if (~exec_stall_reg &&(inst_ret || inst_retlw || inst_retfie))
-        next_pc_node <= stack_top;
+        next_pc_node = stack_top;
     else if (~exec_stall_reg &&(inst_goto || inst_call))
-        next_pc_node <= {pclath_reg[4:3],inst_reg[10:0]};
+        next_pc_node = {pclath_reg[4:3],inst_reg[10:0]};
     else if (~exec_stall_reg && (writeram_node && addr_pcl))
         // PCL is data-destination, but update the entire PC.
-        next_pc_node <= {pclath_reg[4:0],aluout};
+        next_pc_node = {pclath_reg[4:0],aluout};
     else
-        next_pc_node <= pc_reg + 1;
+        next_pc_node = pc_reg + 1;
 end
 
 // Set the program counter
@@ -665,27 +665,27 @@ always @(
 begin
     if (inst_movwf || inst_bcf || inst_bsf || inst_clrf)
     begin
-        writew_node     <= 0;
-        writeram_node   <= 1;
+        writew_node     = 0;
+        writeram_node   = 1;
     end
     else if (   inst_movlw || inst_addlw || inst_sublw || inst_andlw
                 || inst_iorlw || inst_xorlw || inst_retlw || inst_clrw)
     begin
-        writew_node     <= 1;
-        writeram_node   <= 0;
+        writew_node     = 1;
+        writeram_node   = 0;
     end
     else if (   inst_movf   || inst_swapf || inst_addwf || inst_subwf
                 || inst_andwf  || inst_iorwf || inst_xorwf || inst_decf
                 || inst_incf   || inst_rlf   || inst_rrf   || inst_decfsz
                 || inst_incfsz || inst_comf)
     begin
-        writew_node     <= ~inst_reg[7];  // ("d" field of fetched instruction)
-        writeram_node   <=  inst_reg[7];  // ("d" field of fetched instruction)
+        writew_node     = ~inst_reg[7];  // ("d" field of fetched instruction)
+        writeram_node   =  inst_reg[7];  // ("d" field of fetched instruction)
     end
     else
     begin
-        writew_node     <= 0;
-        writeram_node   <= 0;
+        writew_node     = 0;
+        writeram_node   = 0;
     end
 end // End of determine destination logic
 
@@ -731,32 +731,32 @@ begin
     // 2-4-1-1. Set aluout register
     // Rotate left
     if      (inst_rlf)
-        aluout <= {aluinp1_reg[6:0],status_reg[0]};
+        aluout = {aluinp1_reg[6:0],status_reg[0]};
     // Rotate right
     else if (inst_rrf)
-        aluout  <= {status_reg[0],aluinp1_reg[7:1]};
+        aluout  = {status_reg[0],aluinp1_reg[7:1]};
     // Swap nibbles
     else if (inst_swapf)
-        aluout <= {aluinp1_reg[3:0],aluinp1_reg[7:4]};
+        aluout = {aluinp1_reg[3:0],aluinp1_reg[7:4]};
     // Logical inversion
     else if (inst_comf)
-        aluout  <= ~aluinp1_reg;
+        aluout  = ~aluinp1_reg;
     // Logical AND, bit clear/bit test
     else if (   inst_andlw || inst_andwf || inst_bcf || inst_btfsc
                 || inst_btfss)
-        aluout  <= (aluinp1_reg & aluinp2_reg);
+        aluout  = (aluinp1_reg & aluinp2_reg);
     // Logical OR, bit set
     else if (inst_bsf || inst_iorlw || inst_iorwf)
-        aluout  <= (aluinp1_reg | aluinp2_reg);
+        aluout  = (aluinp1_reg | aluinp2_reg);
     // Logical XOR
     else if (inst_xorlw || inst_xorwf)
-        aluout  <= (aluinp1_reg ^ aluinp2_reg);
+        aluout  = (aluinp1_reg ^ aluinp2_reg);
     // Addition, Subtraction, Increment, Decrement
     else if (  inst_addlw || inst_addwf  || inst_sublw || inst_subwf
                || inst_decf || inst_decfsz || inst_incf  || inst_incfsz)
-        aluout  <= add_node[7:0];
-    // Pass through
-    else aluout  <= aluinp1_reg;
+        aluout  = add_node[7:0];
+    // Pass throgh
+    else aluout  = aluinp1_reg;
 end
 
 
@@ -931,16 +931,16 @@ always @(
     )
 begin
     case (state_reg)
-        Q2_PP     : if (int_condition) next_state_node <= QINT_PP;
-            else next_state_node <= Q4_PP;
-        Q4_PP     : if (~exec_stall_reg && inst_sleep) next_state_node <= QSLEEP_PP;
-            else next_state_node <= Q2_PP;
-        QINT_PP   : next_state_node <= Q2_PP;
-        QSLEEP_PP : if (inte_sync_reg) next_state_node <= Q2_PP;
-            else next_state_node <= QSLEEP_PP;
+        Q2_PP     : if (int_condition) next_state_node = QINT_PP;
+            else next_state_node = Q4_PP;
+        Q4_PP     : if (~exec_stall_reg && inst_sleep) next_state_node = QSLEEP_PP;
+            else next_state_node = Q2_PP;
+        QINT_PP   : next_state_node = Q2_PP;
+        QSLEEP_PP : if (inte_sync_reg) next_state_node = Q2_PP;
+            else next_state_node = QSLEEP_PP;
         // Default condition provided for convention and completeness
         // only.  Logically, all of the conditions are already covered.
-        default   : next_state_node <= Q2_PP;
+        default   : next_state_node = Q2_PP;
     endcase
 end
 

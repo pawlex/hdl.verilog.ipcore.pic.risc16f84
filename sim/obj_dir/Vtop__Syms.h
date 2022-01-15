@@ -27,7 +27,7 @@ class Vtop__Syms : public VerilatedSyms {
     Vtop_uart                      TOP__top__DOT__tb_uart;
     
     // COVERAGE
-    uint32_t __Vcoverage[653];
+    uint32_t __Vcoverage[786];
     
     // CREATORS
     Vtop__Syms(Vtop* topp, const char* namep);

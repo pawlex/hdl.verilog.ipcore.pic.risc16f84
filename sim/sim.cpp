@@ -38,7 +38,7 @@ int main(int argc, char** argv, char** env) {
     //Vtop* top = new Vtop;  // Or use a const unique_ptr, or the VL_UNIQUE_PTR wrapper
 
     // SETUP STUFF
-    top->uart_prescale = (0x10); // Set a very low prescale for sim.
+    top->uart_prescale = (0x2); // Set a very low prescale for sim.
     //printf("Initial baud: 0x%04x\n", top->uart_prescale);
 
 
