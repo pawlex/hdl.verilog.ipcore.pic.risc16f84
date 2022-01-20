@@ -14,9 +14,9 @@ volatile unsigned char COMMAND[5]; // RIR
 //volatile unsigned char ADDRESS[8];
 //volatile unsigned char DATA[4];
 
-const unsigned char WELCOME[] = "Welcome to PIC!\n\0";
-const unsigned char PROMPT[]  = "> \0";
-const unsigned char ERROR[]   = "ERROR!\n\0";
+const unsigned char WELCOME[] = "Welcome to PIC!\n";
+const unsigned char PROMPT[]  = "> ";
+const unsigned char ERROR[]   = "ERROR!\n";
 
 static void uart_put(unsigned char val)
 {
@@ -43,7 +43,17 @@ static void uart_print_string(unsigned char *val, uint8_t len)
 {
     for(uint8_t i=0; i<len; i++)
     {
-        uart_put(val[i]);
+        UART_TX = val[i];
+        while (!(TX_READY))  { NOP; };
+        TX_VALID=1;
+        while (TX_READY)   { NOP; };
+        TX_VALID = 0;
+
+        //UART_TX = val[i];
+        //while (!(UART_SR & _TX_READY)) { NOP; };    // WAIT FOR TX READY
+        //UART_SR |= _TX_VALID;                       // set TX VALID
+        //while (UART_SR & _TX_READY) { NOP; };       // WAIT FOR TX NOT READY
+        //UART_SR &= ~_TX_VALID;                       // unset TX VALID
     }
 }
 
@@ -64,8 +74,7 @@ static void print_prompt()
     //uart_put(int2ascii(strlen(uart_read_buffer)));
     //uart_put(0x2c); //,
     uart_put(int2ascii(uart_read_pointer));
-    //uart_print_string(PROMPT, strlen(PROMPT));
-    uart_print_string(PROMPT, sizeof(PROMPT));
+    uart_print_string(PROMPT, strlen(PROMPT));
 }
 /*
                    COMMAND[] ARG[1]
@@ -78,35 +87,23 @@ static void print_prompt()
     WR EXTERNAL RAM : WRXR : ADDRESS DATA
 */
 
-//static void write_uart_buffer(unsigned char idx, unsigned char data)
-//{
-//    uart_read_buffer[idx] = data;
-//    uart_print_string("idx ", 5);
-//    uart_put( int2ascii(idx) );
-//    uart_print_nl();
-//    uart_print_string("data ", 5);
-//    uart_put(data);
-//    uart_print_nl();
-//    return;
-//}
-//extern void  bput(uint8_t idx, uint8_t data)
-//{
-//    uart_read_buffer[idx] = data;
-//}
-//extern unsigned char bget(uint8_t idx)
-//{
-//    return uart_read_buffer[idx];
-//}
-
-
+static void write_uart_buffer(unsigned char idx, unsigned char data)
+{
+    uart_read_buffer[idx] = data;
+    uart_print_string("idx ", 5);
+    uart_put( int2ascii(idx) );
+    uart_print_nl();
+    uart_print_string("data ", 5);
+    uart_put(data);
+    uart_print_nl();
+    return;
+}
 static void uart_int_handler()
 {
-    //uart_print_string(COMMAND, sizeof(COMMAND));
     if(uart_read_pointer > UART_RX_BUFFER_SIZE)
     {
         uart_print_nl();
-        //uart_print_string(ERROR, strlen(ERROR));
-        uart_print_string(ERROR, sizeof(ERROR));
+        uart_print_string(ERROR, strlen(ERROR));
         uart_print_nl();
         print_prompt();
         uart_read_pointer = 0;
@@ -116,14 +113,14 @@ static void uart_int_handler()
         if(( mychar == ASCII_CR ) || ( mychar == ASCII_LF ))
         {
             uart_print_nl();
-            uart_print_string("COMMAND:", 8);
+            //uart_print_string("COMMAND:", 8);
             ////void *memcpy(void *dest, const void * src, size_t n)
             ////memcpy(&COMMAND, &uart_read_buffer, 4);
-            COMMAND[0] = uart_read_buffer[0];
-            COMMAND[1] = uart_read_buffer[1];
-            COMMAND[2] = uart_read_buffer[2];
-            COMMAND[3] = uart_read_buffer[3];
-            uart_print_string(COMMAND, 4);
+            //COMMAND[0] = uart_read_buffer[0];
+            //COMMAND[1] = uart_read_buffer[1];
+            //COMMAND[2] = uart_read_buffer[2];
+            //COMMAND[3] = uart_read_buffer[3];
+            //uart_print_string(COMMAND, 4);
             //uart_print_nl();
             //uart_print_string(uart_read_buffer, 4);
             //uart_print_nl();
@@ -131,8 +128,7 @@ static void uart_int_handler()
             uart_read_pointer = 0;
         } else {
             uart_read_buffer[uart_read_pointer] = mychar;
-            //write_uart_buffer(uart_read_pointer, mychar);
-            //bput(uart_read_pointer, mychar);
+            write_uart_buffer(uart_read_pointer, mychar);
             uart_put(uart_read_buffer[uart_read_pointer]);
             uart_read_pointer++;
         }
@@ -147,13 +143,11 @@ static void welcome(void)
     }
     uart_read_buffer[sizeof(uart_read_buffer)-1] = 0;
     uart_print_nl();
-    //uart_print_string(uart_read_buffer, strlen(uart_read_buffer));
-    uart_print_string(uart_read_buffer, sizeof(uart_read_buffer));
+    uart_print_string(uart_read_buffer, strlen(uart_read_buffer));
     uart_print_nl();
     uart_print_string(uart_read_buffer, sizeof(uart_read_buffer));
     uart_print_nl();
-    //uart_print_string(WELCOME, strlen(WELCOME));
-    uart_print_string(WELCOME, sizeof(WELCOME));
+    uart_print_string(WELCOME, strlen(WELCOME));
     uart_print_nl();
     print_prompt(); 
     uart_read_pointer = 0;
@@ -191,8 +185,8 @@ static void io_data_write(uint8_t val, uint16_t sleep)
 
 static void enable_interrupts(void)
 {
-    INTE = 1;
-    GIE = 1;
+    INTCON |= INTCON_INTE;
+    INTCON |= INTCON_GIE;
 }
 static void disable_interrupts(void)
 {
@@ -200,7 +194,7 @@ static void disable_interrupts(void)
 }
 static void clear_interrupt(void)
 {
-    INTF=9; // Clear the flag just cuz.
+    INTCON &= ~INTCON_INTF; // Clear the flag just cuz.
 }
 
 static void interrupt_handler(void) __interrupt (0)

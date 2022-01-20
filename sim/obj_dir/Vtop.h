@@ -87,8 +87,8 @@ VL_MODULE(Vtop) {
     SData/*8:0*/ top__DOT__pic__DOT__ram_adr_node;
     SData/*8:0*/ top__DOT__pic__DOT__add_node;
     SData/*12:0*/ top__DOT__pic__DOT__next_pc_node;
-    SData/*13:0*/ top__DOT__rom[65536];
-    CData/*7:0*/ top__DOT__ram[4096];
+    SData/*13:0*/ top__DOT__rom[1024];
+    CData/*7:0*/ top__DOT__ram[128];
     CData/*7:0*/ top__DOT__aux_ram[65536];
     SData/*12:0*/ top__DOT__pic__DOT__stack_reg[16];
     
@@ -105,6 +105,7 @@ VL_MODULE(Vtop) {
         CData/*0:0*/ top__DOT____Vtogcov__uart_rx_valid_o;
         CData/*0:0*/ top__DOT____Vtogcov__uart_tx_ready_o;
         CData/*0:0*/ top__DOT____Vtogcov__reset;
+        CData/*6:0*/ top__DOT____Vtogcov__ram_addr;
         CData/*7:0*/ top__DOT____Vtogcov__ram_data_rd;
         CData/*7:0*/ top__DOT____Vtogcov__ram_data_wr;
         CData/*7:0*/ top__DOT____Vtogcov__aux_data;
@@ -159,9 +160,9 @@ VL_MODULE(Vtop) {
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__inst_ret;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__inst_rlf;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__inst_rrf;
-        CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__inst_sleep;
     };
     struct {
+        CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__inst_sleep;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__inst_sublw;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__inst_subwf;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__inst_swapf;
@@ -170,6 +171,7 @@ VL_MODULE(Vtop) {
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__addr_pcl;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__addr_stat;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__addr_fsr;
+        CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__addr_indf;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__addr_pclath;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__addr_intcon;
         CData/*0:0*/ top__DOT__pic__DOT____Vtogcov__addr_aux_adr_lo;
@@ -201,15 +203,14 @@ VL_MODULE(Vtop) {
         CData/*0:0*/ __Vclklast__TOP____VinpClk__TOP__top__DOT__reset;
         CData/*0:0*/ __Vchglast__TOP__top__DOT__reset;
         SData/*15:0*/ top__DOT____Vtogcov__uart_prescale;
-        SData/*15:0*/ top__DOT____Vtogcov__rom_addr;
+        SData/*9:0*/ top__DOT____Vtogcov__rom_addr;
         SData/*13:0*/ top__DOT____Vtogcov__rom_data;
-        SData/*11:0*/ top__DOT____Vtogcov__ram_addr;
         SData/*15:0*/ top__DOT____Vtogcov__aux_addr;
-        SData/*12:0*/ top__DOT__pic__DOT____Vtogcov__prog_adr_o;
-        SData/*8:0*/ top__DOT__pic__DOT____Vtogcov__ram_adr_o;
+        SData/*12:0*/ top__DOT__pic__DOT____Vtogcov__pc_reg;
         SData/*12:0*/ top__DOT__pic__DOT____Vtogcov__old_pc_reg;
         SData/*13:0*/ top__DOT__pic__DOT____Vtogcov__inst_reg;
         SData/*12:0*/ top__DOT__pic__DOT____Vtogcov__stack_top;
+        SData/*8:0*/ top__DOT__pic__DOT____Vtogcov__ram_adr_node;
         SData/*8:0*/ top__DOT__pic__DOT____Vtogcov__add_node;
         SData/*12:0*/ top__DOT__pic__DOT____Vtogcov__next_pc_node;
         SData/*12:0*/ top__DOT__pic__DOT____Vtogcov__stack_reg[16];

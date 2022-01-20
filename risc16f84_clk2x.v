@@ -182,7 +182,7 @@ module risc16f84_clk2x (
            prog_adr_o,           // [12:0] ROM address
            ram_dat_i,            // [7:0] RAM read data
            ram_dat_o,            // [7:0] RAM write data
-           ram_adr_o,            // [8:0] RAM address; ram_adr[8:7] indicates RAM-BANK
+           ram_adr_o,            // [8:0] RAM address; ram_adr[8:7] indicates RAM-BANK // only 7 bits physical!!
            ram_we_o,             // RAM write strobe (H active)
            aux_adr_o,            // [15:0] Auxiliary address bus
            aux_dat_io,           // [7:0] Auxiliary data bus (tri-state bidirectional)
@@ -225,12 +225,12 @@ assign uart_prescale = 'h10;
 
 // program ROM data bus/address bus
 input  [13:0] prog_dat_i;   // ROM read data
-output [12:0] prog_adr_o;   // ROM address
+output [9:0] prog_adr_o;   // ROM address
 
 // data RAM data bus/address bus/control signals
 input  [7:0] ram_dat_i;     // RAM read data
 output [7:0] ram_dat_o;     // RAM write data
-output [8:0] ram_adr_o;     // RAM address; ram_adr[8:7] indicates RAM-BANK
+output [6:0] ram_adr_o;     // RAM address; ram_adr[8:7] indicates RAM-BANK // ONLY 7 bits physical, the last 2 bits need to alias.
 output ram_we_o;            // RAM write strobe (H active)
 
 // auxiliary data bus/address bus/control signals
@@ -331,6 +331,7 @@ wire [8:0] ram_adr_node;      // RAM access address
 wire addr_pcl;
 wire addr_stat;
 wire addr_fsr;
+wire addr_indf;
 wire addr_pclath;
 wire addr_intcon;
 wire addr_aux_adr_lo;
@@ -494,14 +495,16 @@ assign inst_sleep   = (inst_reg[13:0]  == 14'b00000001100011);
 // if "d"=0, indirect addressing is used, so RAM address is BANK+FSR
 // otherwise, RAM address is BANK+"d"
 // (see pp.19 of PIC16F84 data sheet)
-assign ram_adr_node = (inst_reg[6:0]==0)?{status_reg[7],fsr_reg[7:0]}:
-       {status_reg[6:5],inst_reg[6:0]};
+assign ram_adr_node = (inst_reg[6:0]==0)?
+    {status_reg[7:7], fsr_reg[7:0]}:
+    {status_reg[6:5],inst_reg[6:0]};
 
 // check if this is an access to external RAM or not
 assign addr_sram   = (ram_adr_node[6:0] > 7'b0001011); //0CH-7FH,8CH-FFH
 
 // check if this is an access to special register or not
 // only 1 signal of the following signals will be '1'
+assign addr_indf    = (ram_adr_node[6:0]    ==  7'b0000000);    // INDF pk
 assign addr_pcl     = (ram_adr_node[6:0]    ==  7'b0000010);    // 02H, 82H
 assign addr_stat    = (ram_adr_node[6:0]    ==  7'b0000011);    // 03H, 83H
 assign addr_fsr     = (ram_adr_node[6:0]    ==  7'b0000100);    // 04H, 84H
@@ -608,6 +611,7 @@ end
 
 // Tri-state drivers instead of a huge selector...  It produces smaller
 // results, and runs faster.
+assign ram_i_node = (addr_indf)       ?(ram_dat_i|fsr_reg):8'bZ; // Handle indirect read pk
 assign ram_i_node = (addr_sram)       ?ram_dat_i:8'bZ;
 assign ram_i_node = (addr_pcl)        ?pc_reg[7:0]:8'bZ;
 assign ram_i_node = (addr_stat)       ?status_reg:8'bZ;
@@ -1014,8 +1018,8 @@ assign int_condition = (inte_sync_reg && ~exec_stall_reg && intcon_reg[7]);
 // GIE bit must be set to issue interrupt
 
 // Circuit's output signals
-assign prog_adr_o = pc_reg;        // program ROM address
-assign ram_adr_o  = ram_adr_node;  // data RAM address
+assign prog_adr_o = pc_reg[9:0];        // program ROM address
+assign ram_adr_o  = ram_adr_node[6:0];  // data RAM address
 assign ram_dat_o  = aluout;        // data RAM write data
 assign ram_we_o   = ram_we_reg;    // data RAM write enable
 

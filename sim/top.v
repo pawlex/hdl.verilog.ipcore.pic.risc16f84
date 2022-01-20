@@ -5,21 +5,21 @@
 `undef SIMULATION
 
 module top(
-    input clk, 
-    input reset_n,
-    //
-    //input   wire    [30:0]  i_setup,
-    //input uart_rx,
-    //output uart_tx,
-    //
-    input [15:0] uart_prescale,
-    input [7:0] uart_tx_data_i,
-    output [7:0] uart_rx_data_o,
-    input uart_rx_ready_i,
-    input uart_tx_valid_i,
-    output uart_rx_valid_o,
-    output uart_tx_ready_o
-);
+           input clk,
+           input reset_n,
+           //
+           //input   wire    [30:0]  i_setup,
+           //input uart_rx,
+           //output uart_tx,
+           //
+           input [15:0] uart_prescale,
+           input [7:0] uart_tx_data_i,
+           output [7:0] uart_rx_data_o,
+           input uart_rx_ready_i,
+           input uart_tx_valid_i,
+           output uart_rx_valid_o,
+           output uart_tx_ready_o
+       );
 
 //wire [7:0] uart_rx_data_i, uart_tx_data_o;
 //wire uart_rx_valid_o, uart_tx_valid_i;
@@ -32,8 +32,8 @@ wire reset; assign reset = ~reset_n;
 
 // BEGIN ROM SECTION.
 parameter ROM_DATA_WIDTH = 14; //{DATA_WIDTH{1'b1}};
-//parameter ROM_ADDR_WIDTH = 13;
-parameter ROM_ADDR_WIDTH = 16;
+//parameter ROM_ADDR_WIDTH = 9;
+parameter ROM_ADDR_WIDTH = 10;
 reg [ROM_DATA_WIDTH-1:0] rom [1<<ROM_ADDR_WIDTH];
 initial begin
     $readmemh("main.rom", rom);
@@ -44,8 +44,8 @@ assign rom_data = rom[rom_addr];
 
 // BEGIN RAM SECTION.
 parameter RAM_DATA_WIDTH = 8;
-//parameter RAM_ADDR_WIDTH = 9;
-parameter RAM_ADDR_WIDTH = 12;
+parameter RAM_ADDR_WIDTH = 7; // more than 7 bits will cause issues with the pic16f84 unless addl. logic is added to handle indirect addressing.
+//parameter RAM_ADDR_WIDTH = 14;
 reg  [RAM_DATA_WIDTH-1:0] ram [1<<RAM_ADDR_WIDTH];
 wire [RAM_ADDR_WIDTH-1:0] ram_addr;
 wire [RAM_DATA_WIDTH-1:0] ram_data_rd;
@@ -99,20 +99,20 @@ assign uart_rx_i = uart_tx;
 assign uart_rx = uart_tx_o;
 /* verilator lint_off PINMISSING */
 uart tb_uart
-(
-    .clk(clk),
-    .rst(!reset_n),
-    .input_axis_tdata(uart_tx_data_i),
-    .input_axis_tvalid(uart_tx_valid_i),
-    .input_axis_tready(uart_tx_ready_o),
+     (
+         .clk(clk),
+         .rst(!reset_n),
+         .input_axis_tdata(uart_tx_data_i),
+         .input_axis_tvalid(uart_tx_valid_i),
+         .input_axis_tready(uart_tx_ready_o),
 
-    .output_axis_tdata(uart_rx_data_o),
-    .output_axis_tvalid(uart_rx_valid_o),
-    .output_axis_tready(uart_rx_ready_i),
-    .rxd(uart_rx_i),
-    .txd(uart_tx_o),
-    .prescale(uart_prescale)
-);
+         .output_axis_tdata(uart_rx_data_o),
+         .output_axis_tvalid(uart_rx_valid_o),
+         .output_axis_tready(uart_rx_ready_i),
+         .rxd(uart_rx_i),
+         .txd(uart_tx_o),
+         .prescale(uart_prescale)
+     );
 /* verilator lint_on PINMISSING */
 
 endmodule
