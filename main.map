@@ -1,34 +1,34 @@
 gplink-1.4.0 #1107 (Apr  3 2018)
-Map File - Created 1-20-2022  10:47:22
+Map File - Created 1-20-2022  12:24:00
 
                                  Section Info
                   Section       Type    Address   Location Size(Bytes)
                 ---------  ---------  ---------  ---------  ---------
             IDD_idata_0_i    romdata   0x000002    program   0x000002
-                   .cinit    romdata   0x000255    program   0x000010
+                   .cinit    romdata   0x000338    program   0x000010
                   STARTUP       code   0x000000    program   0x000004
               c_interrupt       code   0x000004    program   0x00002e
-S_idata___sdcc_gsinit_startup       code   0x00001b    program   0x000138
- S_main__uart_int_handler       code   0x0000b7    program   0x0000dc
-             S_main__main       code   0x000125    program   0x000098
-                    .code       code   0x000171    program   0x000068
-           S_main__sleepn       code   0x0001a5    program   0x000052
-S_main__uart_print_string       code   0x0001ce    program   0x00003a
-     S_main__print_prompt       code   0x0001eb    program   0x000028
-               IDC_main_0       code   0x0001ff    program   0x000024
-         S_main__uart_put       code   0x000211    program   0x000022
-    S_main__io_data_write       code   0x000222    program   0x00001c
-         S_main__uart_get       code   0x000230    program   0x000014
-               IDC_main_2       code   0x00023a    program   0x000012
-               IDC_main_3       code   0x000243    program   0x000012
-        S_main__int2ascii       code   0x00024c    program   0x000012
-    S_main__uart_print_nl       code   0x00025d    program   0x00000a
-               IDC_main_1       code   0x000262    program   0x000008
-S_main__enable_interrupts       code   0x000266    program   0x000008
-  S_main__clear_interrupt       code   0x00026a    program   0x000006
-S_main__disable_interrupts       code   0x00026d    program   0x000006
-             S_main__halt       code   0x000270    program   0x000006
-              IDD_idata_0      idata   0x00004c       data   0x000001
+ S_main__uart_int_handler       code   0x00001b    program   0x0001f0
+S_idata___sdcc_gsinit_startup       code   0x000113    program   0x000138
+     S___memcpy____memcpy       code   0x0001af    program   0x0000aa
+                    .code       code   0x000204    program   0x000080
+             S_main__main       code   0x000244    program   0x000074
+        S__strlen__strlen       code   0x00027e    program   0x000054
+     S_main__print_prompt       code   0x0002a8    program   0x00003e
+S_main__uart_print_string       code   0x0002c7    program   0x00003a
+               IDC_main_0       code   0x0002e4    program   0x000024
+         S_main__uart_put       code   0x0002f6    program   0x000022
+               IDC_main_3       code   0x000307    program   0x000014
+               IDC_main_4       code   0x000311    program   0x000014
+               IDC_main_5       code   0x00031b    program   0x000014
+         S_main__uart_get       code   0x000325    program   0x000014
+               IDC_main_2       code   0x00032f    program   0x000012
+    S_main__uart_print_nl       code   0x000340    program   0x00000a
+               IDC_main_1       code   0x000345    program   0x000008
+S_main__enable_interrupts       code   0x000349    program   0x000008
+  S_main__clear_interrupt       code   0x00034d    program   0x000006
+S_main__disable_interrupts       code   0x000350    program   0x000006
+              IDD_idata_0      idata   0x00007d       data   0x000001
      UD_abs_pic16f84_0000      udata   0x000000       data   0x000001
      UD_abs_pic16f84_0001      udata   0x000001       data   0x000001
      UD_abs_pic16f84_0002      udata   0x000002       data   0x000001
@@ -42,11 +42,15 @@ S_main__disable_interrupts       code   0x00026d    program   0x000006
      UD_abs_pic16f84_000a      udata   0x00000a       data   0x000001
      UD_abs_pic16f84_000b      udata   0x00000b       data   0x000001
                 sharebank      udata   0x00000c       data   0x000010
-               UDL_main_0      udata   0x00001c       data   0x000019
-              UDL_idata_0      udata   0x000035       data   0x00000c
-                UD_main_1      udata   0x000041       data   0x000005
-                UD_main_2      udata   0x000046       data   0x000005
-                UD_main_0      udata   0x00004b       data   0x000001
+               UDL_main_0      udata   0x00001c       data   0x00001e
+                UD_main_1      udata   0x00003a       data   0x000013
+           UDL___memcpy_0      udata   0x00004d       data   0x00000d
+              UDL_idata_0      udata   0x00005a       data   0x00000c
+                UD_main_3      udata   0x000066       data   0x000008
+            UDL__strlen_0      udata   0x00006e       data   0x000006
+                UD_main_2      udata   0x000074       data   0x000004
+                UD_main_4      udata   0x000078       data   0x000004
+                UD_main_0      udata   0x00007c       data   0x000001
      UD_abs_pic16f84_0081      udata   0x000081       data   0x000001
      UD_abs_pic16f84_0085      udata   0x000085       data   0x000001
      UD_abs_pic16f84_0086      udata   0x000086       data   0x000001
@@ -59,31 +63,31 @@ S_main__disable_interrupts       code   0x00026d    program   0x000006
                               Program Memory Usage
                                Start         End
                            ---------   ---------
-                            0x0001ff    0x000210
-                            0x000262    0x000265
-                            0x00023a    0x000242
-                            0x000243    0x00024b
+                            0x0002e4    0x0002f5
+                            0x000345    0x000348
+                            0x00032f    0x000337
+                            0x000307    0x000310
+                            0x000311    0x00031a
+                            0x00031b    0x000324
                             0x000000    0x000001
                             0x000004    0x00001a
-                            0x000125    0x000170
-                            0x00026a    0x00026c
-                            0x00026d    0x00026f
-                            0x000266    0x000269
-                            0x000222    0x00022f
-                            0x0001a5    0x0001cd
-                            0x000270    0x000272
-                            0x0000b7    0x000124
-                            0x0001eb    0x0001fe
-                            0x00024c    0x000254
-                            0x00025d    0x000261
-                            0x0001ce    0x0001ea
-                            0x000230    0x000239
-                            0x000211    0x000221
-                            0x000171    0x0001a4
+                            0x000244    0x00027d
+                            0x00034d    0x00034f
+                            0x000350    0x000352
+                            0x000349    0x00034c
+                            0x00001b    0x000112
+                            0x0002a8    0x0002c6
+                            0x000340    0x000344
+                            0x0002c7    0x0002e3
+                            0x000325    0x00032e
+                            0x0002f6    0x000306
+                            0x00027e    0x0002a7
+                            0x0001af    0x000203
+                            0x000204    0x000243
                             0x000002    0x000002
-                            0x00001b    0x0000b6
-                            0x000255    0x00025c
-                            626 program addresses used
+                            0x000113    0x0001ae
+                            0x000338    0x00033f
+                            850 program addresses used
 
 
 
@@ -107,39 +111,37 @@ S_main__disable_interrupts       code   0x00026d    program   0x000006
                     STK11   0x000010       data     extern main.asm
                     STK12   0x00000f       data     extern main.asm
                     WSAVE   0x00000e       data     extern main.asm
-               _00105_DS_   0x000213    program     static main.asm
-               _00105_DS_   0x00007b    program     static ../libsdcc_a-idata.asm
-               _00107_DS_   0x000218    program     static main.asm
-               _00107_DS_   0x0000ac    program     static ../libsdcc_a-idata.asm
-               _00108_DS_   0x00021a    program     static main.asm
-               _00108_DS_   0x00002e    program     static ../libsdcc_a-idata.asm
-               _00110_DS_   0x00021f    program     static main.asm
-               _00110_DS_   0x0000b3    program     static ../libsdcc_a-idata.asm
-               _00116_DS_   0x000238    program     static main.asm
-               _00118_DS_   0x000239    program     static main.asm
-               _00125_DS_   0x0001d6    program     static main.asm
-               _00127_DS_   0x0001ea    program     static main.asm
-               _00144_DS_   0x0000d8    program     static main.asm
-               _00145_DS_   0x000103    program     static main.asm
-               _00149_DS_   0x0000cf    program     static main.asm
-               _00151_DS_   0x000124    program     static main.asm
-               _00167_DS_   0x00013d    program     static main.asm
-               _00169_DS_   0x000126    program     static main.asm
-               _00175_DS_   0x000270    program     static main.asm
-               _00182_DS_   0x0001c0    program     static main.asm
-               _00184_DS_   0x0001cd    program     static main.asm
-               _00186_DS_   0x0001b6    program     static main.asm
-               _00187_DS_   0x0001ba    program     static main.asm
-               _00204_DS_   0x0001b0    program     static main.asm
-               _00205_DS_   0x0001c6    program     static main.asm
-               _00212_DS_   0x00022f    program     static main.asm
-               _00234_DS_   0x00016e    program     static main.asm
-                 _COMMAND   0x000046       data     extern main.asm
+               _00105_DS_   0x0002f8    program     static main.asm
+               _00105_DS_   0x000287    program     static libc_a-_strlen.asm
+               _00105_DS_   0x0001c8    program     static libc_a-__memcpy.asm
+               _00105_DS_   0x000173    program     static ../libsdcc_a-idata.asm
+               _00107_DS_   0x0002fd    program     static main.asm
+               _00107_DS_   0x0002a2    program     static libc_a-_strlen.asm
+               _00107_DS_   0x0001fc    program     static libc_a-__memcpy.asm
+               _00107_DS_   0x0001a4    program     static ../libsdcc_a-idata.asm
+               _00108_DS_   0x0002ff    program     static main.asm
+               _00108_DS_   0x000126    program     static ../libsdcc_a-idata.asm
+               _00110_DS_   0x000304    program     static main.asm
+               _00110_DS_   0x0001ab    program     static ../libsdcc_a-idata.asm
+               _00116_DS_   0x00032d    program     static main.asm
+               _00118_DS_   0x00032e    program     static main.asm
+               _00125_DS_   0x0002cf    program     static main.asm
+               _00127_DS_   0x0002e3    program     static main.asm
+               _00140_DS_   0x00004b    program     static main.asm
+               _00141_DS_   0x0000f1    program     static main.asm
+               _00145_DS_   0x000042    program     static main.asm
+               _00147_DS_   0x000112    program     static main.asm
+               _00183_DS_   0x000259    program     static main.asm
+               _00185_DS_   0x00027b    program     static main.asm
+               _00188_DS_   0x000245    program     static main.asm
+                 _ADDRESS   0x000066       data     extern main.asm
+                 _COMMAND   0x000074       data     extern main.asm
+                    _DATA   0x000078       data     extern main.asm
                   _EECON1   0x000088       data     extern pic16f84.asm
               _EECON1bits   0x000088       data     extern pic16f84.asm
                   _EECON2   0x000089       data     extern pic16f84.asm
                   _EEDATA   0x000008       data     extern pic16f84.asm
-                   _ERROR   0x00023a    program     extern main.asm
+                   _ERROR   0x00032f    program     extern main.asm
                      _FSR   0x000004       data     extern pic16f84.asm
                     _INDF   0x000000       data     extern pic16f84.asm
                   _INTCON   0x00000b       data     extern pic16f84.asm
@@ -152,14 +154,17 @@ S_main__disable_interrupts       code   0x00026d    program   0x000006
                _PORTAbits   0x000005       data     extern pic16f84.asm
                    _PORTB   0x000006       data     extern pic16f84.asm
                _PORTBbits   0x000006       data     extern pic16f84.asm
-                  _PROMPT   0x000262    program     extern main.asm
+                  _PROMPT   0x000345    program     extern main.asm
                   _STATUS   0x000003       data     extern pic16f84.asm
               _STATUSbits   0x000003       data     extern pic16f84.asm
-_S_idata___sdcc_gsinit_startup_0008   0x000023    program     static ../libsdcc_a-idata.asm
-_S_idata___sdcc_gsinit_startup_0030   0x00004b    program     static ../libsdcc_a-idata.asm
-_S_idata___sdcc_gsinit_startup_003F   0x00005a    program     static ../libsdcc_a-idata.asm
-_S_idata___sdcc_gsinit_startup_0057   0x000072    program     static ../libsdcc_a-idata.asm
-_S_idata___sdcc_gsinit_startup_0076   0x000091    program     static ../libsdcc_a-idata.asm
+_S___memcpy____memcpy_002F   0x0001de    program     static libc_a-__memcpy.asm
+_S___memcpy____memcpy_0043   0x0001f2    program     static libc_a-__memcpy.asm
+  _S__strlen__strlen_0013   0x000291    program     static libc_a-_strlen.asm
+_S_idata___sdcc_gsinit_startup_0008   0x00011b    program     static ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_0030   0x000143    program     static ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_003F   0x000152    program     static ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_0057   0x00016a    program     static ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_0076   0x000189    program     static ../libsdcc_a-idata.asm
                     _TMR0   0x000001       data     extern pic16f84.asm
                    _TRISA   0x000085       data     extern pic16f84.asm
                _TRISAbits   0x000085       data     extern pic16f84.asm
@@ -169,74 +174,101 @@ _S_idata___sdcc_gsinit_startup_0076   0x000091    program     static ../libsdcc_
                  _UART_SR   0x000009       data     extern pic16f84.asm
              _UART_SRbits   0x000009       data     extern pic16f84.asm
                  _UART_TX   0x000007       data     extern pic16f84.asm
-                 _WELCOME   0x0001ff    program     extern main.asm
-        ___sdcc_saved_fsr   0x000034       data     static main.asm
-                 ___str_0   0x000243    program     static main.asm
-            __codeptrget1   0x00017f    program     extern _gptrget1.S
-            __codeptrget2   0x000196    program     static _gptrget2.S
-            __dataptrget1   0x000178    program     static _gptrget1.S
-            __dataptrget2   0x00018c    program     static _gptrget2.S
-                __gptrget   0x000171    program     extern _gptrget1.S
-               __gptrget1   0x000171    program     extern _gptrget1.S
-               __gptrget2   0x000184    program     extern _gptrget2.S
-    __sdcc_gsinit_startup   0x00001b    program     extern ../libsdcc_a-idata.asm
+                 _WELCOME   0x0002e4    program     extern main.asm
+                ___memcpy   0x0001af    program     extern libc_a-__memcpy.asm
+        ___sdcc_saved_fsr   0x000039       data     static main.asm
+                 ___str_0   0x000307    program     static main.asm
+                 ___str_1   0x000311    program     static main.asm
+                 ___str_2   0x00031b    program     static main.asm
+            __codeptrget1   0x00021e    program     extern _gptrget1.S
+            __codeptrget2   0x000235    program     static _gptrget2.S
+            __dataptrget1   0x000217    program     static _gptrget1.S
+            __dataptrget2   0x00022b    program     static _gptrget2.S
+            __dataptrput1   0x000208    program     static _gptrput1.S
+                __gptrget   0x000210    program     extern _gptrget1.S
+               __gptrget1   0x000210    program     extern _gptrget1.S
+               __gptrget2   0x000223    program     extern _gptrget2.S
+                __gptrput   0x000204    program     extern _gptrput1.S
+               __gptrput1   0x000204    program     extern _gptrput1.S
+    __sdcc_gsinit_startup   0x000113    program     extern ../libsdcc_a-idata.asm
          __sdcc_interrupt   0x000004    program     static main.asm
-                   _cinit   0x000255    program     extern 
-         _clear_interrupt   0x00026a    program     static main.asm
-      _disable_interrupts   0x00026d    program     static main.asm
-       _enable_interrupts   0x000266    program     static main.asm
-             _force_cinit   0x00004c       data     static ../libsdcc_a-idata.asm
-                    _halt   0x000270    program     static main.asm
-               _int2ascii   0x00024c    program     static main.asm
+                   _cinit   0x000338    program     extern 
+         _clear_interrupt   0x00034d    program     static main.asm
+      _disable_interrupts   0x000350    program     static main.asm
+       _enable_interrupts   0x000349    program     static main.asm
+             _force_cinit   0x00007d       data     static ../libsdcc_a-idata.asm
        _interrupt_handler   0x000004    program     static main.asm
-           _io_data_write   0x000222    program     static main.asm
-                    _main   0x000125    program     extern main.asm
-            _print_prompt   0x0001eb    program     static main.asm
-                  _sleepn   0x0001a5    program     static main.asm
-                _uart_get   0x000230    program     static main.asm
-        _uart_int_handler   0x0000b7    program     static main.asm
-           _uart_print_nl   0x00025d    program     static main.asm
-       _uart_print_string   0x0001ce    program     static main.asm
-                _uart_put   0x000211    program     static main.asm
-        _uart_read_buffer   0x000041       data     extern main.asm
-       _uart_read_pointer   0x00004b       data     extern main.asm
-                 _welcome   0x000125    program     static main.asm
-                  r0x1000   0x000036       data     static ../libsdcc_a-idata.asm
-                  r0x1001   0x000035       data     static ../libsdcc_a-idata.asm
-                  r0x1002   0x000037       data     static ../libsdcc_a-idata.asm
-                  r0x1003   0x000038       data     static ../libsdcc_a-idata.asm
-                  r0x1004   0x000039       data     static ../libsdcc_a-idata.asm
-                  r0x1005   0x00003a       data     static ../libsdcc_a-idata.asm
-                  r0x1006   0x00003c       data     static ../libsdcc_a-idata.asm
-                  r0x1007   0x00003b       data     static ../libsdcc_a-idata.asm
-                  r0x1008   0x00003d       data     static ../libsdcc_a-idata.asm
-                  r0x1009   0x00003e       data     static ../libsdcc_a-idata.asm
-                  r0x100A   0x000040       data     static ../libsdcc_a-idata.asm
-                  r0x100B   0x00003f       data     static ../libsdcc_a-idata.asm
-                  r0x100C   0x00001e       data     static main.asm
-                  r0x100D   0x00001d       data     static main.asm
-                  r0x100E   0x00001c       data     static main.asm
-                  r0x100F   0x00001f       data     static main.asm
-                  r0x1010   0x000020       data     static main.asm
-                  r0x1011   0x000021       data     static main.asm
-                  r0x1012   0x000022       data     static main.asm
-                  r0x1015   0x000023       data     static main.asm
-                  r0x1016   0x000024       data     static main.asm
-                  r0x1017   0x000025       data     static main.asm
-                  r0x1018   0x00002a       data     static main.asm
-                  r0x1019   0x00002b       data     static main.asm
-                  r0x101A   0x00002c       data     static main.asm
-                  r0x101B   0x00002d       data     static main.asm
-                  r0x101C   0x00002f       data     static main.asm
-                  r0x101D   0x00002e       data     static main.asm
-                  r0x101E   0x000030       data     static main.asm
-                  r0x101F   0x000031       data     static main.asm
-                  r0x1020   0x000033       data     static main.asm
-                  r0x1021   0x000032       data     static main.asm
-                  r0x1022   0x000027       data     static main.asm
-                  r0x1023   0x000026       data     static main.asm
-                  r0x1024   0x000028       data     static main.asm
-                  r0x1025   0x000029       data     static main.asm
+                    _main   0x000244    program     extern main.asm
+            _print_prompt   0x0002a8    program     static main.asm
+                  _strlen   0x00027e    program     extern libc_a-_strlen.asm
+                _uart_get   0x000325    program     static main.asm
+        _uart_int_handler   0x00001b    program     static main.asm
+           _uart_print_nl   0x000340    program     static main.asm
+       _uart_print_string   0x0002c7    program     static main.asm
+                _uart_put   0x0002f6    program     static main.asm
+        _uart_read_buffer   0x00003a       data     extern main.asm
+       _uart_read_pointer   0x00007c       data     extern main.asm
+                 _welcome   0x00025a    program     static main.asm
+                  r0x1000   0x000070       data     static libc_a-_strlen.asm
+                  r0x1000   0x00004f       data     static libc_a-__memcpy.asm
+                  r0x1000   0x00005b       data     static ../libsdcc_a-idata.asm
+                  r0x1001   0x00006f       data     static libc_a-_strlen.asm
+                  r0x1001   0x00004e       data     static libc_a-__memcpy.asm
+                  r0x1001   0x00005a       data     static ../libsdcc_a-idata.asm
+                  r0x1002   0x00006e       data     static libc_a-_strlen.asm
+                  r0x1002   0x00004d       data     static libc_a-__memcpy.asm
+                  r0x1002   0x00005c       data     static ../libsdcc_a-idata.asm
+                  r0x1003   0x000071       data     static libc_a-_strlen.asm
+                  r0x1003   0x00005d       data     static ../libsdcc_a-idata.asm
+                  r0x1004   0x000072       data     static libc_a-_strlen.asm
+                  r0x1004   0x000051       data     static libc_a-__memcpy.asm
+                  r0x1004   0x00005e       data     static ../libsdcc_a-idata.asm
+                  r0x1005   0x000073       data     static libc_a-_strlen.asm
+                  r0x1005   0x000050       data     static libc_a-__memcpy.asm
+                  r0x1005   0x00005f       data     static ../libsdcc_a-idata.asm
+                  r0x1006   0x000053       data     static libc_a-__memcpy.asm
+                  r0x1006   0x000061       data     static ../libsdcc_a-idata.asm
+                  r0x1007   0x000052       data     static libc_a-__memcpy.asm
+                  r0x1007   0x000060       data     static ../libsdcc_a-idata.asm
+                  r0x1008   0x000054       data     static libc_a-__memcpy.asm
+                  r0x1008   0x000062       data     static ../libsdcc_a-idata.asm
+                  r0x1009   0x000055       data     static libc_a-__memcpy.asm
+                  r0x1009   0x000063       data     static ../libsdcc_a-idata.asm
+                  r0x100A   0x000056       data     static libc_a-__memcpy.asm
+                  r0x100A   0x000065       data     static ../libsdcc_a-idata.asm
+                  r0x100B   0x000059       data     static libc_a-__memcpy.asm
+                  r0x100B   0x000064       data     static ../libsdcc_a-idata.asm
+                  r0x100C   0x000058       data     static libc_a-__memcpy.asm
+                  r0x100D   0x000057       data     static libc_a-__memcpy.asm
+                  r0x1025   0x00001e       data     static main.asm
+                  r0x1026   0x00001d       data     static main.asm
+                  r0x1027   0x00001c       data     static main.asm
+                  r0x1028   0x00001f       data     static main.asm
+                  r0x1029   0x000020       data     static main.asm
+                  r0x102A   0x000021       data     static main.asm
+                  r0x102B   0x000022       data     static main.asm
+                  r0x102E   0x000024       data     static main.asm
+                  r0x102F   0x000023       data     static main.asm
+                  r0x1030   0x000025       data     static main.asm
+                  r0x1031   0x000027       data     static main.asm
+                  r0x1032   0x000026       data     static main.asm
+                  r0x1033   0x000028       data     static main.asm
+                  r0x1034   0x000031       data     static main.asm
+                  r0x1035   0x000030       data     static main.asm
+                  r0x1036   0x000032       data     static main.asm
+                  r0x1037   0x000034       data     static main.asm
+                  r0x1038   0x000033       data     static main.asm
+                  r0x1039   0x000035       data     static main.asm
+                  r0x103A   0x000036       data     static main.asm
+                  r0x103B   0x000037       data     static main.asm
+                  r0x103C   0x000038       data     static main.asm
+                  r0x103D   0x00002a       data     static main.asm
+                  r0x103E   0x000029       data     static main.asm
+                  r0x103F   0x00002b       data     static main.asm
+                  r0x1040   0x00002d       data     static main.asm
+                  r0x1041   0x00002c       data     static main.asm
+                  r0x1042   0x00002e       data     static main.asm
+                  r0x1043   0x00002f       data     static main.asm
 
 
 
@@ -279,54 +311,76 @@ _S_idata___sdcc_gsinit_startup_0076   0x000091    program     static ../libsdcc_
          END_OF_INTERRUPT   0x00001a    program     static main.asm
                     STK01   0x00001a       data     extern main.asm
                     STK00   0x00001b       data     extern main.asm
-    __sdcc_gsinit_startup   0x00001b    program     extern ../libsdcc_a-idata.asm
-                  r0x100E   0x00001c       data     static main.asm
-                  r0x100D   0x00001d       data     static main.asm
-                  r0x100C   0x00001e       data     static main.asm
-                  r0x100F   0x00001f       data     static main.asm
-                  r0x1010   0x000020       data     static main.asm
-                  r0x1011   0x000021       data     static main.asm
-                  r0x1012   0x000022       data     static main.asm
-_S_idata___sdcc_gsinit_startup_0008   0x000023    program     static ../libsdcc_a-idata.asm
-                  r0x1015   0x000023       data     static main.asm
-                  r0x1016   0x000024       data     static main.asm
-                  r0x1017   0x000025       data     static main.asm
-                  r0x1023   0x000026       data     static main.asm
-                  r0x1022   0x000027       data     static main.asm
-                  r0x1024   0x000028       data     static main.asm
-                  r0x1025   0x000029       data     static main.asm
-                  r0x1018   0x00002a       data     static main.asm
-                  r0x1019   0x00002b       data     static main.asm
-                  r0x101A   0x00002c       data     static main.asm
-                  r0x101B   0x00002d       data     static main.asm
-               _00108_DS_   0x00002e    program     static ../libsdcc_a-idata.asm
-                  r0x101D   0x00002e       data     static main.asm
-                  r0x101C   0x00002f       data     static main.asm
-                  r0x101E   0x000030       data     static main.asm
-                  r0x101F   0x000031       data     static main.asm
-                  r0x1021   0x000032       data     static main.asm
-                  r0x1020   0x000033       data     static main.asm
-        ___sdcc_saved_fsr   0x000034       data     static main.asm
-                  r0x1001   0x000035       data     static ../libsdcc_a-idata.asm
-                  r0x1000   0x000036       data     static ../libsdcc_a-idata.asm
-                  r0x1002   0x000037       data     static ../libsdcc_a-idata.asm
-                  r0x1003   0x000038       data     static ../libsdcc_a-idata.asm
-                  r0x1004   0x000039       data     static ../libsdcc_a-idata.asm
-                  r0x1005   0x00003a       data     static ../libsdcc_a-idata.asm
-                  r0x1007   0x00003b       data     static ../libsdcc_a-idata.asm
-                  r0x1006   0x00003c       data     static ../libsdcc_a-idata.asm
-                  r0x1008   0x00003d       data     static ../libsdcc_a-idata.asm
-                  r0x1009   0x00003e       data     static ../libsdcc_a-idata.asm
-                  r0x100B   0x00003f       data     static ../libsdcc_a-idata.asm
-                  r0x100A   0x000040       data     static ../libsdcc_a-idata.asm
-        _uart_read_buffer   0x000041       data     extern main.asm
-                 _COMMAND   0x000046       data     extern main.asm
-_S_idata___sdcc_gsinit_startup_0030   0x00004b    program     static ../libsdcc_a-idata.asm
-       _uart_read_pointer   0x00004b       data     extern main.asm
-             _force_cinit   0x00004c       data     static ../libsdcc_a-idata.asm
-_S_idata___sdcc_gsinit_startup_003F   0x00005a    program     static ../libsdcc_a-idata.asm
-_S_idata___sdcc_gsinit_startup_0057   0x000072    program     static ../libsdcc_a-idata.asm
-               _00105_DS_   0x00007b    program     static ../libsdcc_a-idata.asm
+        _uart_int_handler   0x00001b    program     static main.asm
+                  r0x1027   0x00001c       data     static main.asm
+                  r0x1026   0x00001d       data     static main.asm
+                  r0x1025   0x00001e       data     static main.asm
+                  r0x1028   0x00001f       data     static main.asm
+                  r0x1029   0x000020       data     static main.asm
+                  r0x102A   0x000021       data     static main.asm
+                  r0x102B   0x000022       data     static main.asm
+                  r0x102F   0x000023       data     static main.asm
+                  r0x102E   0x000024       data     static main.asm
+                  r0x1030   0x000025       data     static main.asm
+                  r0x1032   0x000026       data     static main.asm
+                  r0x1031   0x000027       data     static main.asm
+                  r0x1033   0x000028       data     static main.asm
+                  r0x103E   0x000029       data     static main.asm
+                  r0x103D   0x00002a       data     static main.asm
+                  r0x103F   0x00002b       data     static main.asm
+                  r0x1041   0x00002c       data     static main.asm
+                  r0x1040   0x00002d       data     static main.asm
+                  r0x1042   0x00002e       data     static main.asm
+                  r0x1043   0x00002f       data     static main.asm
+                  r0x1035   0x000030       data     static main.asm
+                  r0x1034   0x000031       data     static main.asm
+                  r0x1036   0x000032       data     static main.asm
+                  r0x1038   0x000033       data     static main.asm
+                  r0x1037   0x000034       data     static main.asm
+                  r0x1039   0x000035       data     static main.asm
+                  r0x103A   0x000036       data     static main.asm
+                  r0x103B   0x000037       data     static main.asm
+                  r0x103C   0x000038       data     static main.asm
+        ___sdcc_saved_fsr   0x000039       data     static main.asm
+        _uart_read_buffer   0x00003a       data     extern main.asm
+               _00145_DS_   0x000042    program     static main.asm
+               _00140_DS_   0x00004b    program     static main.asm
+                  r0x1002   0x00004d       data     static libc_a-__memcpy.asm
+                  r0x1001   0x00004e       data     static libc_a-__memcpy.asm
+                  r0x1000   0x00004f       data     static libc_a-__memcpy.asm
+                  r0x1005   0x000050       data     static libc_a-__memcpy.asm
+                  r0x1004   0x000051       data     static libc_a-__memcpy.asm
+                  r0x1007   0x000052       data     static libc_a-__memcpy.asm
+                  r0x1006   0x000053       data     static libc_a-__memcpy.asm
+                  r0x1008   0x000054       data     static libc_a-__memcpy.asm
+                  r0x1009   0x000055       data     static libc_a-__memcpy.asm
+                  r0x100A   0x000056       data     static libc_a-__memcpy.asm
+                  r0x100D   0x000057       data     static libc_a-__memcpy.asm
+                  r0x100C   0x000058       data     static libc_a-__memcpy.asm
+                  r0x100B   0x000059       data     static libc_a-__memcpy.asm
+                  r0x1001   0x00005a       data     static ../libsdcc_a-idata.asm
+                  r0x1000   0x00005b       data     static ../libsdcc_a-idata.asm
+                  r0x1002   0x00005c       data     static ../libsdcc_a-idata.asm
+                  r0x1003   0x00005d       data     static ../libsdcc_a-idata.asm
+                  r0x1004   0x00005e       data     static ../libsdcc_a-idata.asm
+                  r0x1005   0x00005f       data     static ../libsdcc_a-idata.asm
+                  r0x1007   0x000060       data     static ../libsdcc_a-idata.asm
+                  r0x1006   0x000061       data     static ../libsdcc_a-idata.asm
+                  r0x1008   0x000062       data     static ../libsdcc_a-idata.asm
+                  r0x1009   0x000063       data     static ../libsdcc_a-idata.asm
+                  r0x100B   0x000064       data     static ../libsdcc_a-idata.asm
+                  r0x100A   0x000065       data     static ../libsdcc_a-idata.asm
+                 _ADDRESS   0x000066       data     extern main.asm
+                  r0x1002   0x00006e       data     static libc_a-_strlen.asm
+                  r0x1001   0x00006f       data     static libc_a-_strlen.asm
+                  r0x1000   0x000070       data     static libc_a-_strlen.asm
+                  r0x1003   0x000071       data     static libc_a-_strlen.asm
+                  r0x1004   0x000072       data     static libc_a-_strlen.asm
+                  r0x1005   0x000073       data     static libc_a-_strlen.asm
+                 _COMMAND   0x000074       data     extern main.asm
+                    _DATA   0x000078       data     extern main.asm
+       _uart_read_pointer   0x00007c       data     extern main.asm
+             _force_cinit   0x00007d       data     static ../libsdcc_a-idata.asm
               _OPTION_REG   0x000081       data     extern pic16f84.asm
           _OPTION_REGbits   0x000081       data     extern pic16f84.asm
                    _TRISA   0x000085       data     extern pic16f84.asm
@@ -337,58 +391,64 @@ _S_idata___sdcc_gsinit_startup_0057   0x000072    program     static ../libsdcc_
                   _EECON1   0x000088       data     extern pic16f84.asm
               _EECON1bits   0x000088       data     extern pic16f84.asm
                   _EECON2   0x000089       data     extern pic16f84.asm
-_S_idata___sdcc_gsinit_startup_0076   0x000091    program     static ../libsdcc_a-idata.asm
-               _00107_DS_   0x0000ac    program     static ../libsdcc_a-idata.asm
-               _00110_DS_   0x0000b3    program     static ../libsdcc_a-idata.asm
-        _uart_int_handler   0x0000b7    program     static main.asm
-               _00149_DS_   0x0000cf    program     static main.asm
-               _00144_DS_   0x0000d8    program     static main.asm
-               _00145_DS_   0x000103    program     static main.asm
-               _00151_DS_   0x000124    program     static main.asm
-                    _main   0x000125    program     extern main.asm
-                 _welcome   0x000125    program     static main.asm
-               _00169_DS_   0x000126    program     static main.asm
-               _00167_DS_   0x00013d    program     static main.asm
-               _00234_DS_   0x00016e    program     static main.asm
-                __gptrget   0x000171    program     extern _gptrget1.S
-               __gptrget1   0x000171    program     extern _gptrget1.S
-            __dataptrget1   0x000178    program     static _gptrget1.S
-            __codeptrget1   0x00017f    program     extern _gptrget1.S
-               __gptrget2   0x000184    program     extern _gptrget2.S
-            __dataptrget2   0x00018c    program     static _gptrget2.S
-            __codeptrget2   0x000196    program     static _gptrget2.S
-                  _sleepn   0x0001a5    program     static main.asm
-               _00204_DS_   0x0001b0    program     static main.asm
-               _00186_DS_   0x0001b6    program     static main.asm
-               _00187_DS_   0x0001ba    program     static main.asm
-               _00182_DS_   0x0001c0    program     static main.asm
-               _00205_DS_   0x0001c6    program     static main.asm
-               _00184_DS_   0x0001cd    program     static main.asm
-       _uart_print_string   0x0001ce    program     static main.asm
-               _00125_DS_   0x0001d6    program     static main.asm
-               _00127_DS_   0x0001ea    program     static main.asm
-            _print_prompt   0x0001eb    program     static main.asm
-                 _WELCOME   0x0001ff    program     extern main.asm
-                _uart_put   0x000211    program     static main.asm
-               _00105_DS_   0x000213    program     static main.asm
-               _00107_DS_   0x000218    program     static main.asm
-               _00108_DS_   0x00021a    program     static main.asm
-               _00110_DS_   0x00021f    program     static main.asm
-           _io_data_write   0x000222    program     static main.asm
-               _00212_DS_   0x00022f    program     static main.asm
-                _uart_get   0x000230    program     static main.asm
-               _00116_DS_   0x000238    program     static main.asm
-               _00118_DS_   0x000239    program     static main.asm
-                   _ERROR   0x00023a    program     extern main.asm
-                 ___str_0   0x000243    program     static main.asm
-               _int2ascii   0x00024c    program     static main.asm
-                   _cinit   0x000255    program     extern 
-           _uart_print_nl   0x00025d    program     static main.asm
-                  _PROMPT   0x000262    program     extern main.asm
-       _enable_interrupts   0x000266    program     static main.asm
-         _clear_interrupt   0x00026a    program     static main.asm
-      _disable_interrupts   0x00026d    program     static main.asm
-               _00175_DS_   0x000270    program     static main.asm
-                    _halt   0x000270    program     static main.asm
+               _00141_DS_   0x0000f1    program     static main.asm
+               _00147_DS_   0x000112    program     static main.asm
+    __sdcc_gsinit_startup   0x000113    program     extern ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_0008   0x00011b    program     static ../libsdcc_a-idata.asm
+               _00108_DS_   0x000126    program     static ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_0030   0x000143    program     static ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_003F   0x000152    program     static ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_0057   0x00016a    program     static ../libsdcc_a-idata.asm
+               _00105_DS_   0x000173    program     static ../libsdcc_a-idata.asm
+_S_idata___sdcc_gsinit_startup_0076   0x000189    program     static ../libsdcc_a-idata.asm
+               _00107_DS_   0x0001a4    program     static ../libsdcc_a-idata.asm
+               _00110_DS_   0x0001ab    program     static ../libsdcc_a-idata.asm
+                ___memcpy   0x0001af    program     extern libc_a-__memcpy.asm
+               _00105_DS_   0x0001c8    program     static libc_a-__memcpy.asm
+_S___memcpy____memcpy_002F   0x0001de    program     static libc_a-__memcpy.asm
+_S___memcpy____memcpy_0043   0x0001f2    program     static libc_a-__memcpy.asm
+               _00107_DS_   0x0001fc    program     static libc_a-__memcpy.asm
+                __gptrput   0x000204    program     extern _gptrput1.S
+               __gptrput1   0x000204    program     extern _gptrput1.S
+            __dataptrput1   0x000208    program     static _gptrput1.S
+                __gptrget   0x000210    program     extern _gptrget1.S
+               __gptrget1   0x000210    program     extern _gptrget1.S
+            __dataptrget1   0x000217    program     static _gptrget1.S
+            __codeptrget1   0x00021e    program     extern _gptrget1.S
+               __gptrget2   0x000223    program     extern _gptrget2.S
+            __dataptrget2   0x00022b    program     static _gptrget2.S
+            __codeptrget2   0x000235    program     static _gptrget2.S
+                    _main   0x000244    program     extern main.asm
+               _00188_DS_   0x000245    program     static main.asm
+               _00183_DS_   0x000259    program     static main.asm
+                 _welcome   0x00025a    program     static main.asm
+               _00185_DS_   0x00027b    program     static main.asm
+                  _strlen   0x00027e    program     extern libc_a-_strlen.asm
+               _00105_DS_   0x000287    program     static libc_a-_strlen.asm
+  _S__strlen__strlen_0013   0x000291    program     static libc_a-_strlen.asm
+               _00107_DS_   0x0002a2    program     static libc_a-_strlen.asm
+            _print_prompt   0x0002a8    program     static main.asm
+       _uart_print_string   0x0002c7    program     static main.asm
+               _00125_DS_   0x0002cf    program     static main.asm
+               _00127_DS_   0x0002e3    program     static main.asm
+                 _WELCOME   0x0002e4    program     extern main.asm
+                _uart_put   0x0002f6    program     static main.asm
+               _00105_DS_   0x0002f8    program     static main.asm
+               _00107_DS_   0x0002fd    program     static main.asm
+               _00108_DS_   0x0002ff    program     static main.asm
+               _00110_DS_   0x000304    program     static main.asm
+                 ___str_0   0x000307    program     static main.asm
+                 ___str_1   0x000311    program     static main.asm
+                 ___str_2   0x00031b    program     static main.asm
+                _uart_get   0x000325    program     static main.asm
+               _00116_DS_   0x00032d    program     static main.asm
+               _00118_DS_   0x00032e    program     static main.asm
+                   _ERROR   0x00032f    program     extern main.asm
+                   _cinit   0x000338    program     extern 
+           _uart_print_nl   0x000340    program     static main.asm
+                  _PROMPT   0x000345    program     extern main.asm
+       _enable_interrupts   0x000349    program     static main.asm
+         _clear_interrupt   0x00034d    program     static main.asm
+      _disable_interrupts   0x000350    program     static main.asm
 
 

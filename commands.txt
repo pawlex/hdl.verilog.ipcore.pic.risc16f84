@@ -1,0 +1,12 @@
+/*
+                   COMMAND[] ARG[1]
+    RD INTERNAL RAM : RDIR : 0000 16-bits
+    RD INTERNAL ROM : RDIO
+    RD EXTERNAL RAM : RDXR
+    RD IO BUS       : RDIO :
+    WR IO BUS       : WRIO
+    WR INTERNAL RAM : WRIR : 0000_ABCD DEFG
+    WR EXTERNAL RAM : WRXR : ADDRESS DATA
+*/
+
+
