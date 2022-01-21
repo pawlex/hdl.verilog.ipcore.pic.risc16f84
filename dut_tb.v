@@ -8,7 +8,7 @@ module dut_tb(
        );
 // BEGIN ROM SECTION.
 parameter ROM_DATA_WIDTH = 14; //{DATA_WIDTH{1'b1}};
-parameter ROM_ADDR_WIDTH = 13;
+parameter ROM_ADDR_WIDTH = 10;
 reg [ROM_DATA_WIDTH-1:0] rom [1<<ROM_ADDR_WIDTH];
 initial begin
     $readmemh("main.rom", rom);

@@ -103,14 +103,15 @@ always @(posedge clk or posedge rst) begin
             if (bit_cnt > DATA_WIDTH+1) begin
                 if (~rxd_reg) begin
                     bit_cnt <= bit_cnt - 1;
-                    prescale_reg <= (prescale << 3)-1;
+                    /* verilator lint_off WIDTH */
+                    prescale_reg <= (prescale << 2'h3)-1;
                 end else begin
                     bit_cnt <= 0;
                     prescale_reg <= 0;
                 end
             end else if (bit_cnt > 1) begin
                 bit_cnt <= bit_cnt - 1;
-                prescale_reg <= (prescale << 3)-1;
+                prescale_reg <= (prescale << 2'h3)-1;
                 data_reg <= {rxd_reg, data_reg[DATA_WIDTH-1:1]};
             end else if (bit_cnt == 1) begin
                 bit_cnt <= bit_cnt - 1;
@@ -125,7 +126,7 @@ always @(posedge clk or posedge rst) begin
         end else begin
             busy_reg <= 0;
             if (~rxd_reg) begin
-                prescale_reg <= (prescale << 2)-2;
+                prescale_reg <= (prescale << 2'h2)-2;
                 bit_cnt <= DATA_WIDTH+2;
                 data_reg <= 0;
                 busy_reg <= 1;

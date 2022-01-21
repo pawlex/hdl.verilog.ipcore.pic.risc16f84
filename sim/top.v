@@ -44,8 +44,9 @@ assign rom_data = rom[rom_addr];
 
 // BEGIN RAM SECTION.
 parameter RAM_DATA_WIDTH = 8;
-parameter RAM_ADDR_WIDTH = 7; // more than 7 bits will cause issues with the pic16f84 unless addl. logic is added to handle indirect addressing.
-//parameter RAM_ADDR_WIDTH = 14;
+parameter RAM_ADDR_WIDTH = 8; // 256 bytes of GP Ram, bit[7] masked in the CPU model.
+// more than 7 bits will cause issues with the pic16f84 unless addl. logic is added to handle indirect addressing.
+//parameter RAM_ADDR_WIDTH = 8; // more than 7 bits will cause issues with the pic16f84 unless addl. logic is added to handle indirect addressing.
 reg  [RAM_DATA_WIDTH-1:0] ram [1<<RAM_ADDR_WIDTH];
 wire [RAM_ADDR_WIDTH-1:0] ram_addr;
 wire [RAM_DATA_WIDTH-1:0] ram_data_rd;

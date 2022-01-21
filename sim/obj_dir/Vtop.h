@@ -43,6 +43,7 @@ VL_MODULE(Vtop) {
     // LOCAL SIGNALS
     // Internals; generally not touched by application code
     CData/*0:0*/ top__DOT__reset;
+    CData/*7:0*/ top__DOT__ram_addr;
     CData/*7:0*/ top__DOT__ram_data_rd;
     CData/*7:0*/ top__DOT__aux_data;
     CData/*0:0*/ top__DOT__aux_rd_stb;
@@ -88,7 +89,7 @@ VL_MODULE(Vtop) {
     SData/*8:0*/ top__DOT__pic__DOT__add_node;
     SData/*12:0*/ top__DOT__pic__DOT__next_pc_node;
     SData/*13:0*/ top__DOT__rom[1024];
-    CData/*7:0*/ top__DOT__ram[128];
+    CData/*7:0*/ top__DOT__ram[256];
     CData/*7:0*/ top__DOT__aux_ram[65536];
     SData/*12:0*/ top__DOT__pic__DOT__stack_reg[16];
     
@@ -105,7 +106,7 @@ VL_MODULE(Vtop) {
         CData/*0:0*/ top__DOT____Vtogcov__uart_rx_valid_o;
         CData/*0:0*/ top__DOT____Vtogcov__uart_tx_ready_o;
         CData/*0:0*/ top__DOT____Vtogcov__reset;
-        CData/*6:0*/ top__DOT____Vtogcov__ram_addr;
+        CData/*7:0*/ top__DOT____Vtogcov__ram_addr;
         CData/*7:0*/ top__DOT____Vtogcov__ram_data_rd;
         CData/*7:0*/ top__DOT____Vtogcov__ram_data_wr;
         CData/*7:0*/ top__DOT____Vtogcov__aux_data;

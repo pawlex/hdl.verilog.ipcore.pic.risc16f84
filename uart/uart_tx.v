@@ -87,7 +87,8 @@ always @(posedge clk or posedge rst) begin
 
             if (input_axis_tvalid) begin
                 input_axis_tready_reg <= ~input_axis_tready_reg;
-                prescale_reg <= (prescale << 3)-1;
+                /* verilator lint_off WIDTH */
+                prescale_reg <= (prescale << 2'h3)-1;
                 bit_cnt <= DATA_WIDTH+1;
                 data_reg <= {1'b1, input_axis_tdata};
                 txd_reg <= 0;
@@ -96,11 +97,11 @@ always @(posedge clk or posedge rst) begin
         end else begin
             if (bit_cnt > 1) begin
                 bit_cnt <= bit_cnt - 1;
-                prescale_reg <= (prescale << 3)-1;
+                prescale_reg <= (prescale << 2'h3)-1;
                 {data_reg, txd_reg} <= {1'b0, data_reg};
             end else if (bit_cnt == 1) begin
                 bit_cnt <= bit_cnt - 1;
-                prescale_reg <= (prescale << 3);
+                prescale_reg <= (prescale << 2'h3);
                 txd_reg <= 1;
             end
         end

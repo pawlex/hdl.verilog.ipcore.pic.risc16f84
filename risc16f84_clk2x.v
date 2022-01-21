@@ -230,7 +230,7 @@ output [9:0] prog_adr_o;   // ROM address
 // data RAM data bus/address bus/control signals
 input  [7:0] ram_dat_i;     // RAM read data
 output [7:0] ram_dat_o;     // RAM write data
-output [6:0] ram_adr_o;     // RAM address; ram_adr[8:7] indicates RAM-BANK // ONLY 7 bits physical, the last 2 bits need to alias.
+output [7:0] ram_adr_o;     // RAM address; ram_adr[8:7] indicates RAM-BANK // ONLY 7 bits physical, the last 2 bits need to alias.
 output ram_we_o;            // RAM write strobe (H active)
 
 // auxiliary data bus/address bus/control signals
@@ -496,8 +496,8 @@ assign inst_sleep   = (inst_reg[13:0]  == 14'b00000001100011);
 // otherwise, RAM address is BANK+"d"
 // (see pp.19 of PIC16F84 data sheet)
 assign ram_adr_node = (inst_reg[6:0]==0)?
-    {status_reg[7:7], fsr_reg[7:0]}:
-    {status_reg[6:5],inst_reg[6:0]};
+       {status_reg[7:7], fsr_reg[7:0]}:
+       {status_reg[6:5],inst_reg[6:0]};
 
 // check if this is an access to external RAM or not
 assign addr_sram   = (ram_adr_node[6:0] > 7'b0001011); //0CH-7FH,8CH-FFH
@@ -1019,7 +1019,9 @@ assign int_condition = (inte_sync_reg && ~exec_stall_reg && intcon_reg[7]);
 
 // Circuit's output signals
 assign prog_adr_o = pc_reg[9:0];        // program ROM address
-assign ram_adr_o  = ram_adr_node[6:0];  // data RAM address
+//assign ram_adr_o  = ram_adr_node[6:0];  // data RAM address
+//assign ram_adr_o  = { ram_adr_node[8], 1'b0, ram_adr_node[6:0] };  // data RAM address // mask bit 7 PK
+assign ram_adr_o  = { ram_adr_node[8], ram_adr_node[6:0] };  // data RAM address // mask bit 7 PK
 assign ram_dat_o  = aluout;        // data RAM write data
 assign ram_we_o   = ram_we_reg;    // data RAM write enable
 
