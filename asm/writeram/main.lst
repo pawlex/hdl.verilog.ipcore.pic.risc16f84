@@ -1,0 +1,194 @@
+LOC    OBJECT CODE    LINE  SOURCE TEXT
+  VALUE
+
+                      00001 ;START=0x00C             END=0x07F
+                      00002 ;START=0x08C             END=0x0FF           PROTECTED
+                      00003 ;START=0x10C             END=0x17F
+                      00004 ;START=0x18C             END=0x1FF           PROTECTED
+                      00005 
+                      00006 ; STATUS REGISER:
+                      00007 ; bit 7: IRP: Register Bank Select bit (used for indirect addressing)
+                      00008 ; 0 = Bank 0, 1 (00h - FFh)
+                      00009 ; 1 = Bank 2, 3 (100h - 1FFh)
+                      00010 ; The IRP bit is not used by the PIC16F8X. IRP should be maintained clear.
+                      00011 ; bit 6-5: RP1:RP0: Register Bank Select bits (used for direct addressing)
+                      00012 ; 00 = Bank 0 (00h - 7Fh)
+                      00013 ; 01 = Bank 1 (80h - FFh)
+                      00014 ; 10 = Bank 2 (100h - 17Fh)
+                      00015 ; 11 = Bank 3 (180h - 1FFh)
+                      00016 ; Each bank is 128 bytes. Only bit RP0 is used by the PIC16F8X. RP1 should be maintained clear.
+                      00017 ;
+                      00018 list    p=16f84
+                      00019         radix  hex
+                      00020 include "p16f84.inc"
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Aug 07 2014
+                      00005 ;  MPASM PIC16F84 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00208         LIST
+                      00021 ;START movlw 0x55      ; pattern
+                      00022 ;L0  BCF   STATUS, IRP ; BANK 0x0 - 0xFF 
+                      00023 
+                      00024 
+                      00025 ; JUMP OVER NEXT INSTRUCTION IF TRUE
+                      00026 ;BTFSC Bit Test, Skip if Clear - TRUE IF BIT IS 0
+                      00027 ;BTFSS Bit Test f, Skip if Set - TRUE IF BIT IS 1
+                      00028 
+                      00029 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+0000   1383           00030 S   BCF     STATUS, IRP     ; SET BANK 0 (0x0C - 0x7F)
+0001   3055           00031     MOVLW   0x55            ; MOVE THE INITIAL PATTERN INTO THE 1ST ADDRESS (0xC)
+0002   008C           00032     MOVWF   0xC
+0003   300C           00033 L0  MOVLW   0xC             ; SET THE WRITE POINTER
+0004   0084           00034     MOVWF   FSR
+0005   080C           00035     MOVFW   0xC             ; LOAD THE PATTERN INTO THE WORKING REGISTER
+0006   0080           00036 L2  MOVWF   INDF            ; MOVE THE PATTERN INTO THE ADDRESS POINTED TO BY FSR
+0007   0A84           00037     INCF    FSR,    1       ; INC THE POINTER TO NEXT ADDRESS
+0008   1F84           00038     BTFSS   FSR,    7       ; BIT TEST FSR BIT 7
+0009   2806           00039     GOTO    L2              ; if(!FSR & 0b1000_0000) JMP label: L2
+                      00040 ;   ELSE
+000A   1B83           00041     BTFSC   STATUS, IRP     ; if(BANK1)
+000B   280E           00042     GOTO    L3              ; if(!BANK1) goto L3
+000C   1783           00043     BSF     STATUS, IRP     ; SET BANK 1 (0x8C - 0xFF)
+000D   2803           00044     GOTO    L0              ; RESTART WRITING AT 1ST ADDRESS OF BANK 1 (initial pattern)
+000E   1383           00045 L3  BCF     STATUS, IRP     ; GO BACK TO BANK 0
+000F   30FF           00046     MOVLW   0xFF            ;
+0010   068C           00047     XORWF   0xC,    1       ; CHANGE THE PATTERN TO 0xAA
+0011   2803           00048     GOTO    L0              ; START OVER
+                      00049                  
+                      00050     END                     ;;;;;;;;;;;;
+
+
+SYMBOL TABLE
+  LABEL                             VALUE
+
+C                                 00000000
+DC                                00000001
+EEADR                             00000009
+EECON1                            00000088
+EECON2                            00000089
+EEDATA                            00000008
+EEIE                              00000006
+EEIF                              00000004
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+L0                                00000003
+L2                                00000006
+L3                                0000000E
+NOT_PD                            00000003
+NOT_RBPU                          00000007
+NOT_TO                            00000004
+OPTION_REG                        00000081
+PCL                               00000002
+PCLATH                            0000000A
+PORTA                             00000005
+PORTB                             00000006
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+S                                 00000000
+STATUS                            00000003
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+W                                 00000000
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_CONFIG                           00002007
+_CP_OFF                           00003FFF
+_CP_ON                            0000000F
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FFD
+__16F84                           00000001
+__CODE_END                        000003FF
+__CODE_START                      00000000
+__COMMON_RAM_END                  0000004F
+__COMMON_RAM_START                0000000C
+__EEPROM_END                      0000213F
+__EEPROM_START                    00002100
+__VECTOR_INT                      00000004
+__VECTOR_RESET                    00000000
+
+
+MEMORY USAGE MAP ('X' = Used,  '-' = Unused)
+
+0000 : XXXXXXXXXXXXXXXX XX-------------- ---------------- ----------------
+
+All other memory blocks unused.
+
+Program Memory Words Used:    18
+Program Memory Words Free:  1006
+
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+
