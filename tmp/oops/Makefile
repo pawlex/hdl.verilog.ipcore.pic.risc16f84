@@ -1,14 +1,11 @@
 SRC=main.c
+#UART=uart.c
 CC=/opt/sdcc/bin/sdcc
 FAMILY=pic14
 PROC=16f84
-CPU=--use-non-free --no-warn-non-free --stack-size 16 
-OPTS=-V -Wl-m -Wa-w1
-OPTS+=-llibc.lib -llibsdcc.lib
-
-
-#OPTS+=--opt-code-size --max-allocs-per-node 1 --allow-unsafe-read
-#OPTS+=--debug
+OPTS=-V --use-non-free --no-warn-non-free --stack-size 16 -Wl-m -Wa-w1
+OPTS+=-llibc.lib
+#OPTS+=--opt-code-size --max-allocs-per-node 1 --allow-unsafe-read 
 #OPTS+=--no-pcode-opt
 #OPTS+=--more-pedantic 
 #OPTS+=--less-pedantic 
@@ -18,17 +15,26 @@ OPTS+=-llibc.lib -llibsdcc.lib
 #OPTS+=--int-long-reent
 
 #OPTS+=-lstdarg -lstring
-#OPTS+=--out-fmt-ihx
+OPTS+=--out-fmt-ihx
 #OPTS+=--out-fmt-s19
 #LINKEROPTS=-Wl-w-r-mout.map
 
-all: clean $(SRC:.c=.hex) rom
+#all: $(UART:.c=.o) $(SRC:.c=.hex) rom
+all: $(SRC:.c=.hex) rom
+
+_main: $(SRC:.c=.hex)
+
+#_uart: $(UART:.c=.o)
+
+#$(UART:.c=.o): $(UART)
+#	$(CC) $(OPTS) -m$(FAMILY) -p$(PROC) -c $^
 
 $(SRC:.c=.hex): $(SRC)
-	$(CC) $(OPTS) -m$(FAMILY) -p$(PROC) $(CPU) $^ $(UART:.c=.o)
+	$(CC) $(OPTS) -m$(FAMILY) -p$(PROC) $^ $(UART:.c=.o)
 
 clean:
 	rm -f $(SRC:.c=.asm) $(SRC:.c=.cod) $(SRC:.c=.hex) $(SRC:.c=.lst) $(SRC:.c=.o) $(SRC:.c=.hex) $(SRC:.c=.rom) $(SRC:.c=.map)
+	rm -f $(UART:.c=.asm) $(UART:.c=.cod) $(UART:.c=.hex) $(UART:.c=.lst) $(UART:.c=.o) $(UART:.c=.hex) $(UART:.c=.rom)
 	rm -f out.vvp dump.vcd
 
 rom:

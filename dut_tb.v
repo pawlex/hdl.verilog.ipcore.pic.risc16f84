@@ -6,9 +6,12 @@ module dut_tb(
            input clk,
            input reset
        );
+parameter ROM_ADDR_WIDTH = 12;
+parameter RAM_ADDR_WIDTH = 8;
+
+
 // BEGIN ROM SECTION.
 parameter ROM_DATA_WIDTH = 14; //{DATA_WIDTH{1'b1}};
-parameter ROM_ADDR_WIDTH = 10;
 reg [ROM_DATA_WIDTH-1:0] rom [1<<ROM_ADDR_WIDTH];
 initial begin
     $readmemh("main.rom", rom);
@@ -19,7 +22,6 @@ assign rom_data = rom[rom_addr];
 
 // BEGIN RAM SECTION.
 parameter RAM_DATA_WIDTH = 8;
-parameter RAM_ADDR_WIDTH = 8;
 reg  [RAM_DATA_WIDTH-1:0] ram [1<<RAM_ADDR_WIDTH];
 wire [RAM_ADDR_WIDTH-1:0] ram_addr;
 wire [RAM_DATA_WIDTH-1:0] ram_data_rd;

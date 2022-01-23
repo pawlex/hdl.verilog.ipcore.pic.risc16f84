@@ -1,41 +1,102 @@
+#include <stdint.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
+#include <stdlib.h>
+//#include <string.h>
 #include <pic16f84.h>
 #include "main.h"
 
-//#define GPR0_SIZE 32
-#ifdef GPR0_SIZE
-volatile unsigned char gpr_0[GPR0_SIZE];
-#endif
+static void uart_int_handler()
+{
+    if(uart_read_pointer >= UART_BUFFER_STRUCT)
+    {
+        print_error();
+        print_prompt();
+        uart_read_pointer = 0;
+        uart_get(); // Throw away anything waiting in the UART just in case.
+    } else {
+        const unsigned char mychar = uart_get();
+        if( mychar == 0x20 ) 
+        { 
+            // skip if space
+            uart_put(mychar);
+            return; 
+        }
+        if(( mychar == ASCII_CR ) || ( mychar == ASCII_LF ))
+        {
+            convert_addresses();
+            print_uart_read_buffer();
+            print_prompt();
+            uart_read_pointer = 0;
+        } else {
+            // Some pointer magic to allow writing to our struct as it were an array
+            ////void *memcpy(void *dest, const void * src, size_t n)
+            UartReadBuffer *p = &uart_read_buffer;
+            p = (UartReadBuffer*)(((uint8_t*)p) + uart_read_pointer);
+            memcpy(p, &mychar, 1);
+            // write the current character to the UART. 
+            uart_put(mychar);
+            uart_read_pointer++;
+        }
+    }
+}
 
-#define UART_BUFFER_STRUCT
-#ifdef UART_BUFFER_STRUCT
-typedef struct UartReadBuffer {
-   volatile unsigned char command[4];
-   volatile unsigned char       wsp0;
-   volatile unsigned char address[8];
-   volatile unsigned char       wsp1;
-   volatile unsigned char    data[4];
-   volatile unsigned char      term0;
-} UartReadBuffer;
-UartReadBuffer uart_read_buffer = { {0x55,0x55,0x55,0x55}, 0x20, {0x55,0x55,0x55,0x55,0x55,0x55,0x55,0x55}, 0x20, {0x55, 0x55, 0x55,0x55}, 0};
-//UartReadBuffer uart_read_buffer = {}
-//const uint8_t UART_RX_BUFFER_SIZE = sizeof(struct UartReadBuffer);
-#define UART_RX_BUFFER_SIZE 18
-#else
-#define UART_RX_BUFFER_SIZE 19
-volatile unsigned char uart_read_buffer[UART_RX_BUFFER_SIZE];
-volatile unsigned char COMMAND[4];
-volatile unsigned char ADDRESS[8];
-volatile unsigned char DATA[4];
-#endif
 
-volatile unsigned char uart_read_pointer;
+static void welcome(void)
+{
+    uart_print_nl();
+    uart_print_string(WELCOME, sizeof(WELCOME));
+    uart_print_nl();
+    print_prompt(); 
+}
 
-const unsigned char WELCOME[] = "Welcome to PIC!\n\0";
-const unsigned char PROMPT[]  = "> \0";
-const unsigned char ERROR[]   = "ERROR!\n\0";
+static void print_error()
+{
+    uart_print_string(ERROR, sizeof(ERROR));
+    uart_print_nl();
+    print_prompt();
+}
+static void print_uart_read_buffer()
+{
+    uart_print_nl();
+    uart_print_string("COMMAND: ", 9); // 5
+    uart_print_string(uart_read_buffer.command, sizeof(uart_read_buffer.command));
+    uart_print_nl();
+    uart_print_string("ADDRESS: ", 9); // 8
+    uart_print_string(uart_read_buffer.address_a, sizeof(uart_read_buffer.address_a));
+    uart_print_nl();
+    uart_print_string("DATA   : ", 9); // 4
+    uart_print_string(uart_read_buffer.data_a, sizeof(uart_read_buffer.data_a));
+    uart_print_nl();
+}
+static void print_prompt() 
+{
+    uart_print_nl();
+    //uart_print_string prints in ascending order.
+    //so we allocate 4 bytes, write 0x to the low 2
+    //and convert the upper 2 to hex.
+    //then print all 4.
+    //
+    unsigned char hexdata[4];// = {0x30, 0x78, 0x55, 0x40};
+    int2asciihex(uart_read_pointer, &hexdata[2], 2);
+    hexdata[0] = 0x30; //0
+    hexdata[1] = 0x78; //x
+    uart_print_string(hexdata, 4);
+    uart_print_string(PROMPT, 2);
+}
+static void uart_print_string(unsigned char *val, uint8_t len)
+{
+    for(uint8_t i=0; i<len; i++)
+    {
+        uart_put(val[i]);
+    }
+}
+
+static void uart_print_nl(void) 
+{
+    uart_put(ASCII_LF);
+    uart_put(ASCII_CR);
+}
 
 static void uart_put(unsigned char val)
 {
@@ -58,120 +119,48 @@ static unsigned char uart_get(void)
     }
 }
 
-static void uart_print_string(unsigned char *val, uint8_t len)
+static void convert_addresses()
 {
-    for(uint8_t i=0; i<len; i++)
+    //uart_read_buffer.data_8 = atoi(uart_read_buffer.data_a);
+    //unsigned char odata[4] = {0x30, 0x31, 0x32, 0x33};
+    //uint16_t idata = atoi(odata);
+    //memcpy(&uart_read_buffer.data_16, idata, 2);
+    //int2asciihex(idata, uart_read_buffer.data_a, 4);
+    //int2asciihex(idata, odata, 4);
+    uint16_t idata = atoi(uart_read_buffer.data_a);
+    int2asciihex(idata, uart_read_buffer.data_a, 4);
+}
+static void int2asciihex(uint16_t val, uint8_t *retval, uint8_t size)
+{
+    // This function converts an integer to ASCII hex;
+    // The callee must null terminate the string (if required)
+	//unsigned char mapped[size+1]; // 16-bit + NULL
+	for(uint8_t i=0; i<size; i++)
+	{
+		retval[size-i-1] = (unsigned char) hexmap[ (unsigned char) (val >> (i*4) & 0xF) ];
+	}
+}
+
+static void sleepn(uint16_t target)
+{
+    target = (target < 1) ? 10 : target; // sanity
+    for(uint16_t i=0; i<target; i++)
     {
-        uart_put(val[i]);
+        __asm nop __endasm;
     }
 }
-
-static void uart_print_nl(void) 
+static void io_data_write(uint16_t address, uint8_t data)
 {
-    uart_put(ASCII_LF);
-    uart_put(ASCII_CR);
+    PORTA  = (address & 0xff);
+    PORTB  = (address >> 8);
+    EEDATA = data;
 }
-
-static unsigned char int2ascii(uint8_t val)
+static uint8_t io_data_read(uint16_t address)
 {
-    return ((val & 0xF) + 0x30);
+    PORTA  = (address & 0xff);
+    PORTB  = (address >> 8);
+    return (uint8_t) EEDATA;
 }
-
-static void print_prompt() 
-{
-    uart_print_nl();
-    uart_put(int2ascii(uart_read_pointer));
-    uart_print_string(PROMPT, strlen(PROMPT));
-}
-static void uart_int_handler()
-{
-    if(uart_read_pointer > UART_RX_BUFFER_SIZE)
-    {
-        uart_print_nl();
-        uart_print_string(ERROR, strlen(ERROR));
-        uart_print_nl();
-        print_prompt();
-        uart_read_pointer = 0;
-        uart_get();
-    } else {
-        const unsigned char mychar = uart_get();
-        if(( mychar == ASCII_CR ) || ( mychar == ASCII_LF ))
-        {
-        #ifdef UART_BUFFER_STRUCT
-            uart_print_nl();
-            uart_print_string("COMMAND: ", 9); // 5
-            uart_print_string(uart_read_buffer.command, sizeof(uart_read_buffer.command));
-            uart_print_nl();
-            uart_print_string("ADDRESS: ", 9); // 8
-            uart_print_string(uart_read_buffer.address, sizeof(uart_read_buffer.address));
-            uart_print_nl();
-            uart_print_string("DATA   : ", 9); // 4
-            uart_print_string(uart_read_buffer.data, sizeof(uart_read_buffer.data));
-            uart_print_nl();
-        #else
-            memcpy(&COMMAND, &uart_read_buffer   , 4);
-            memcpy(&ADDRESS, &uart_read_buffer+5 , 8);
-            memcpy(&DATA,    &uart_read_buffer+14, 4);
-            uart_print_nl();
-            uart_print_string("COMMAND: ", 9); // 5
-            uart_print_string(COMMAND, sizeof(COMMAND));
-            uart_print_nl();
-            uart_print_string("ADDRESS: ", 9); // 8
-            uart_print_string(ADDRESS, sizeof(ADDRESS));
-            uart_print_nl();
-            uart_print_string("DATA   : ", 9); // 4
-            uart_print_string(DATA, sizeof(DATA));
-            uart_print_nl();
-        #endif
-            ////void *memcpy(void *dest, const void * src, size_t n)
-            print_prompt();
-            uart_read_pointer = 0;
-        } else {
-            UartReadBuffer *p = &uart_read_buffer;
-            p = (UartReadBuffer*)(((uint8_t*)p) + uart_read_pointer);
-            memcpy(p, &mychar, 1);
-            //ptr+=uart_read_pointer;
-            //UartReadBuffer *ptr = &uart_read_buffer;
-            //ptr += uart_read_pointer;
-            //memcpy(ptr, &mychar, 1);
-            //uint8_t curloc = uart_read_pointer;
-            //curloc += &uart_read_buffer;
-            //memcpy((uint8_t*)curloc, &mychar, 1);
-            //*uart_read_buffer+uart_read_pointer = mychar;
-            //uart_put(&uart_read_buffer[uart_read_pointer]);
-            uart_put(mychar);
-            uart_read_pointer++;
-        }
-    }
-}
-
-static void welcome(void)
-{
-    uart_print_nl();
-    uart_print_string(WELCOME, strlen(WELCOME));
-    uart_print_nl();
-    print_prompt(); 
-}
-//static void sleepn(uint16_t target)
-//{
-//    target = (target < 1) ? 10 : target; // sanity
-//    for(uint16_t i=0; i<target; i++)
-//    {
-//        __asm nop __endasm;
-//    }
-//}
-//static void io_data_write(uint16_t address, uint8_t data)
-//{
-//    PORTA  = (address & 0xff);
-//    PORTB  = (address >> 8);
-//    EEDATA = data;
-//}
-//static uint8_t io_data_read(uint16_t address)
-//{
-//    PORTA  = (address & 0xff);
-//    PORTB  = (address >> 8);
-//    return (uint8_t) EEDATA;
-//}
 static void enable_interrupts(void)
 {
     INTE = 1;
@@ -195,9 +184,12 @@ static void interrupt_handler(void) __interrupt (0)
 extern void main(void)
 {
     // ZERO the READ buffer;
-    for(uint8_t i=0;i<UART_RX_BUFFER_SIZE;i++)
+    for(uint8_t i=0;i<UART_BUFFER_STRUCT;i++)
     {
-        //uart_read_buffer[i] = 0;
+        UartReadBuffer *p = &uart_read_buffer;
+        p = (UartReadBuffer*)(((uint8_t*)p) + i);
+        memcpy(p, &INIT_DATA, 1);
+        io_data_write((uint16_t)i, 0x55);
     }
     uart_read_pointer = 0;
 
@@ -205,7 +197,7 @@ extern void main(void)
     for(uint8_t i=0;i<GPR0_SIZE;i++)
     {
         gpr_0[i] = i;
-        EEDATA = i;
+        io_data_write((uint16_t)i, 0xAA);
     }
     #endif
 
@@ -217,4 +209,3 @@ extern void main(void)
         NOP;
     }
 }
-

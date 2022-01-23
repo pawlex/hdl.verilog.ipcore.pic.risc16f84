@@ -197,7 +197,8 @@ module risc16f84_clk2x (
            uart_tx,
            uart_prescale
        );
-
+parameter RAM_ADDR_WIDTH = 8; // 256 bytes of GP Ram, bit[7] masked in the CPU model.
+parameter ROM_ADDR_WIDTH = 12;
 
 // You can change the following parameters as you would like
 parameter STACK_SIZE_PP      = 16;   // Size of PC stack
@@ -225,12 +226,14 @@ assign uart_prescale = 'h10;
 
 // program ROM data bus/address bus
 input  [13:0] prog_dat_i;   // ROM read data
-output [9:0] prog_adr_o;   // ROM address
+//output [9:0] prog_adr_o;   // ROM address
+output [ROM_ADDR_WIDTH-1:0] prog_adr_o;   // ROM address
 
 // data RAM data bus/address bus/control signals
 input  [7:0] ram_dat_i;     // RAM read data
 output [7:0] ram_dat_o;     // RAM write data
-output [7:0] ram_adr_o;     // RAM address; ram_adr[8:7] indicates RAM-BANK // ONLY 7 bits physical, the last 2 bits need to alias.
+output [RAM_ADDR_WIDTH-1:0] ram_adr_o;     // RAM address; ram_adr[8:7]a
+//output [7:0] ram_adr_o;     // RAM address; ram_adr[8:7] indicates RAM-BANK // ONLY 7 bits physical, the last 2 bits need to alias.
 output ram_we_o;            // RAM write strobe (H active)
 
 // auxiliary data bus/address bus/control signals
@@ -383,9 +386,9 @@ wire [7:0] uart_sr;
 wire [7:0] uart_sr_comb = {uart_sr_ff[7:6], uart_sr[5:0]};
 assign ram_i_node = (addr_uart_sr) ? uart_sr_comb : 8'bZ;
 
-assign addr_uart_tx_data = (ram_adr_node[7:0]    == 8'h07);
-assign addr_uart_rx_data = (ram_adr_node[7:0]    == 8'h87);
-assign addr_uart_sr      = (ram_adr_node[7:0]    == 8'h09);
+assign addr_uart_tx_data = (ram_adr_node[7:0]    == 8'h8A);
+assign addr_uart_rx_data = (ram_adr_node[7:0]    == 8'h8B);
+assign addr_uart_sr      = (ram_adr_node[7:0]    == 8'h89);
 
 
 //UART_SRbits.TX_BUSY       //rd
@@ -512,8 +515,8 @@ assign addr_aux_adr_lo = (ram_adr_node[7:0] == 8'b00000101); // 05H
 assign addr_aux_adr_hi = (ram_adr_node[7:0] == 8'b00000110); // 06H
 //7H and 8H 9H are taken by UART line ~400
 assign addr_aux_dat = (ram_adr_node[7:0]    == 8'b00001000);    // 08H // WAS EEPROM DATA
-assign addr_pclath  = (ram_adr_node[6:0]    ==  7'b0001010);    // 0AH, 8AH
-assign addr_intcon  = (ram_adr_node[6:0]    ==  7'b0001011);    // 0BH, 8BH
+assign addr_pclath  = (ram_adr_node[7:0]    == 8'b00001010);    // 0AH
+assign addr_intcon  = (ram_adr_node[7:0]    == 8'b00001011);    // 0BH
 
 // construct bit-mask for logical operations and bit tests
 assign mask_node = 1 << inst_reg[9:7];
@@ -1018,10 +1021,10 @@ assign int_condition = (inte_sync_reg && ~exec_stall_reg && intcon_reg[7]);
 // GIE bit must be set to issue interrupt
 
 // Circuit's output signals
-assign prog_adr_o = pc_reg[9:0];        // program ROM address
+assign prog_adr_o = pc_reg[ROM_ADDR_WIDTH-1:0];        // program ROM address
 //assign ram_adr_o  = ram_adr_node[6:0];  // data RAM address
 //assign ram_adr_o  = { ram_adr_node[8], 1'b0, ram_adr_node[6:0] };  // data RAM address // mask bit 7 PK
-assign ram_adr_o  = { ram_adr_node[8], ram_adr_node[6:0] };  // data RAM address // mask bit 7 PK
+assign ram_adr_o  = { ram_adr_node[RAM_ADDR_WIDTH:8], ram_adr_node[6:0] };  // data RAM address // mask bit 7 PK
 assign ram_dat_o  = aluout;        // data RAM write data
 assign ram_we_o   = ram_we_reg;    // data RAM write enable
 
