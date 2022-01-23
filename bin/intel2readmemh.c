@@ -34,7 +34,7 @@ FILE *fpi;
 // Well.. Let's read stuff in completely before outputting.. Programs
 // should be pretty small..
 //
-#define MAX_MEMORY_SIZE  1024
+#define MAX_MEMORY_SIZE  4096
 struct {
    unsigned int  nAddress;
    unsigned int  byData;

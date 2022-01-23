@@ -21,19 +21,21 @@ module top(
            output uart_tx_ready_o
        );
 
-//wire [7:0] uart_rx_data_i, uart_tx_data_o;
-//wire uart_rx_valid_o, uart_tx_valid_i;
-//wire uart_rx_ready_i, uart_tx_ready_o;
 
+parameter RAM_ADDR_WIDTH = 8; // 256 bytes of GP Ram, bit[7] masked in the CPU model.
+parameter ROM_ADDR_WIDTH = 12;
 
 
 //`include "./dut_tb.v"
 wire reset; assign reset = ~reset_n;
 
+//wire [7:0] uart_rx_data_i, uart_tx_data_o;
+//wire uart_rx_valid_o, uart_tx_valid_i;
+//wire uart_rx_ready_i, uart_tx_ready_o;
+
 // BEGIN ROM SECTION.
 parameter ROM_DATA_WIDTH = 14; //{DATA_WIDTH{1'b1}};
 //parameter ROM_ADDR_WIDTH = 9;
-parameter ROM_ADDR_WIDTH = 10;
 reg [ROM_DATA_WIDTH-1:0] rom [1<<ROM_ADDR_WIDTH];
 initial begin
     $readmemh("main.rom", rom);
@@ -44,7 +46,6 @@ assign rom_data = rom[rom_addr];
 
 // BEGIN RAM SECTION.
 parameter RAM_DATA_WIDTH = 8;
-parameter RAM_ADDR_WIDTH = 8; // 256 bytes of GP Ram, bit[7] masked in the CPU model.
 // more than 7 bits will cause issues with the pic16f84 unless addl. logic is added to handle indirect addressing.
 //parameter RAM_ADDR_WIDTH = 8; // more than 7 bits will cause issues with the pic16f84 unless addl. logic is added to handle indirect addressing.
 reg  [RAM_DATA_WIDTH-1:0] ram [1<<RAM_ADDR_WIDTH];
@@ -73,7 +74,8 @@ wire clken, aux_rd_stb, aux_wr_stb, ram_we;
 reg int0 = 0;
 assign clken = 1;
 
-risc16f84_clk2x pic (
+risc16f84_clk2x #(.ROM_ADDR_WIDTH(ROM_ADDR_WIDTH), .RAM_ADDR_WIDTH(RAM_ADDR_WIDTH))
+                pic (
                     .prog_dat_i(rom_data),
                     .prog_adr_o(rom_addr),
                     .ram_dat_i(ram_data_rd),
